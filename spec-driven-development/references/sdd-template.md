@@ -1,157 +1,157 @@
-# Spec: [FEATURE NAME]
+# Spec: [NOME DA FEATURE]
 
-> Software Design Document — single source of truth for this feature.
+> Documento de Design de Software — fonte única de verdade para esta feature.
 
 **Feature ID**: [FEAT-XXX]
-**Status**: Draft | Under Review | Approved
-**Author**: [name or agent]
-**Created At**: [YYYY-MM-DD]
-**Last Updated**: [YYYY-MM-DD]
+**Status**: Rascunho | Em Revisão | Aprovado
+**Autor**: [nome ou agente]
+**Criado Em**: [YYYY-MM-DD]
+**Última Atualização**: [YYYY-MM-DD]
 
 ---
 
-## 1. Overview
+## 1. Visão Geral
 
-### Problem Statement
+### Declaração do Problema
 
-[What problem does this feature solve? Why does it need to exist?]
+[Qual problema esta feature resolve? Por que ela precisa existir?]
 
-### Solution Summary
+### Resumo da Solução
 
-[High-level description of what will be built. One paragraph.]
+[Descrição de alto nível do que será construído. Um parágrafo.]
 
-### Scope
+### Escopo
 
-**In scope:**
+**No escopo:**
 - [Item 1]
 - [Item 2]
 
-**Out of scope:**
+**Fora do escopo:**
 - [Item 1]
 - [Item 2]
 
 ---
 
-## 2. Stakeholders
+## 2. Partes Interessadas
 
-| Role | Name / Team | Interest |
-|------|-------------|----------|
-| [e.g., Product Owner] | [name] | Feature approval |
-| [e.g., Backend Team] | [name] | Implementation |
-| [e.g., QA] | [name] | Test coverage |
-
----
-
-## 3. Functional Requirements
-
-### [FEAT-XXX-REQ-001] [Requirement title]
-
-**Description**: [What the system must do]
-**Priority**: Must Have | Should Have | Nice to Have
-**Rationale**: [Why this requirement exists]
+| Papel | Nome / Time | Interesse |
+|-------|-------------|-----------|
+| [ex.: Product Owner] | [nome] | Aprovação da feature |
+| [ex.: Time de Backend] | [nome] | Implementação |
+| [ex.: QA] | [nome] | Cobertura de testes |
 
 ---
 
-### [FEAT-XXX-REQ-002] [Requirement title]
+## 3. Requisitos Funcionais
 
-**Description**: [What the system must do]
-**Priority**: Must Have | Should Have | Nice to Have
-**Rationale**: [Why this requirement exists]
+### [FEAT-XXX-REQ-001] [Título do requisito]
+
+**Descrição**: [O que o sistema deve fazer]
+**Prioridade**: Must Have | Should Have | Nice to Have
+**Justificativa**: [Por que este requisito existe]
 
 ---
 
-## 4. Non-Functional Requirements
+### [FEAT-XXX-REQ-002] [Título do requisito]
+
+**Descrição**: [O que o sistema deve fazer]
+**Prioridade**: Must Have | Should Have | Nice to Have
+**Justificativa**: [Por que este requisito existe]
+
+---
+
+## 4. Requisitos Não Funcionais
 
 ### Performance
 
-- [e.g., Response time P95 must be under 200ms]
-- [e.g., Must support 500 concurrent requests]
+- [ex.: Tempo de resposta P95 deve ser menor que 200ms]
+- [ex.: Deve suportar 500 requisições simultâneas]
 
-### Security
+### Segurança
 
-- [e.g., All endpoints must require authentication]
-- [e.g., PII must be encrypted at rest]
+- [ex.: Todos os endpoints devem exigir autenticação]
+- [ex.: PII deve ser criptografado em repouso]
 
-### Availability & Reliability
+### Disponibilidade & Confiabilidade
 
-- [e.g., SLA: 99.9% uptime]
-- [e.g., Must recover from transient failures within 30 seconds]
+- [ex.: SLA: 99,9% de uptime]
+- [ex.: Deve se recuperar de falhas transientes em 30 segundos]
 
-### Scalability
+### Escalabilidade
 
-- [e.g., Must scale horizontally without shared state]
+- [ex.: Deve escalar horizontalmente sem estado compartilhado]
 
-### Observability
+### Observabilidade
 
-- [e.g., All operations must emit structured logs]
-- [e.g., Key metrics must be exported to Prometheus]
-
----
-
-## 5. Acceptance Criteria
-
-| ID | Criterion | Verification Method |
-|----|-----------|-------------------|
-| AC-001 | [When X happens, system must do Y] | [e.g., Automated test / Manual QA] |
-| AC-002 | [When A fails, system must respond with B] | [e.g., Integration test] |
+- [ex.: Todas as operações devem emitir logs estruturados]
+- [ex.: Métricas principais devem ser exportadas para o Prometheus]
 
 ---
 
-## 6. Dependencies
+## 5. Critérios de Aceitação
 
-### Internal
-
-| Dependency | Type | Notes |
-|------------|------|-------|
-| [e.g., User module] | Hard dependency | Must be complete before implementation |
-| [e.g., Auth middleware] | Hard dependency | JWT validation required |
-
-### External
-
-| Dependency | Type | Notes |
-|------------|------|-------|
-| [e.g., Stripe API v3] | External service | Rate limit: 100 req/s |
+| ID | Critério | Método de Verificação |
+|----|----------|----------------------|
+| AC-001 | [Quando X ocorre, o sistema deve fazer Y] | [ex.: Teste automatizado / QA manual] |
+| AC-002 | [Quando A falha, o sistema deve responder com B] | [ex.: Teste de integração] |
 
 ---
 
-## 7. Constraints & Assumptions
+## 6. Dependências
 
-### Constraints
+### Internas
 
-- [e.g., Must use existing PostgreSQL database — no new DB allowed]
-- [e.g., Cannot break the existing public API contract]
+| Dependência | Tipo | Notas |
+|-------------|------|-------|
+| [ex.: Módulo de usuários] | Dependência forte | Deve estar completo antes da implementação |
+| [ex.: Middleware de auth] | Dependência forte | Validação JWT necessária |
 
-### Assumptions
+### Externas
 
-- [e.g., Users are already authenticated when reaching this feature]
-- [e.g., Product catalog is read-only during this operation]
-
----
-
-## 8. Context & Decisions
-
-[Reference to `.specs/features/[feature-name]/context.md` for gray-area decisions]
+| Dependência | Tipo | Notas |
+|-------------|------|-------|
+| [ex.: Stripe API v3] | Serviço externo | Limite de taxa: 100 req/s |
 
 ---
 
-## 9. Traceability Matrix
+## 7. Restrições & Suposições
 
-| Requirement | Acceptance Criteria | Design Section | Task |
-|-------------|-------------------|----------------|------|
+### Restrições
+
+- [ex.: Deve usar o banco de dados PostgreSQL existente — nenhum BD novo permitido]
+- [ex.: Não pode quebrar o contrato de API pública existente]
+
+### Suposições
+
+- [ex.: Os usuários já estão autenticados ao chegar nesta feature]
+- [ex.: O catálogo de produtos é somente leitura durante esta operação]
+
+---
+
+## 8. Contexto & Decisões
+
+[Referência a `.specs/features/[feature-name]/context.md` para decisões em área cinza]
+
+---
+
+## 9. Matriz de Rastreabilidade
+
+| Requisito | Critérios de Aceitação | Seção do Design | Tarefa |
+|-----------|----------------------|-----------------|--------|
 | FEAT-XXX-REQ-001 | AC-001, AC-002 | design.md §3 | T-001 |
 
 ---
 
-## 10. Open Questions
+## 10. Questões em Aberto
 
-| # | Question | Owner | Status |
-|---|----------|-------|--------|
-| 1 | [Question] | [name] | Open |
+| # | Questão | Responsável | Status |
+|---|---------|-------------|--------|
+| 1 | [Questão] | [nome] | Aberta |
 
 ---
 
-## Change Log
+## Log de Mudanças
 
-| Date | Author | Change |
-|------|--------|--------|
-| [YYYY-MM-DD] | [name/agent] | Initial draft |
+| Data | Autor | Mudança |
+|------|-------|---------|
+| [YYYY-MM-DD] | [nome/agente] | Rascunho inicial |

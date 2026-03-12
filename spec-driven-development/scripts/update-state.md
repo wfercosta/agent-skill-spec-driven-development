@@ -1,29 +1,29 @@
 # Script: update-state
 
-> Update `.specs/STATE.md` with the current workflow state and optional metadata.
+> Atualizar `.specs/STATE.md` com o estado atual do fluxo de trabalho e metadados opcionais.
 
 ---
 
-## Objective
+## Objetivo
 
-Maintain an accurate, timestamped record of the current development state in `.specs/STATE.md`. This script is called by other scripts — it should not be called directly by the user unless they need to manually correct the state.
-
----
-
-## Inputs
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `status` | Yes | New state value (see valid states below) |
-| `feature` | No | Feature name currently being worked on |
-| `current_task` | No | Task ID currently in progress |
-| `note` | No | A brief note to add to the status history |
-| `blocked_task` | No | Task ID to mark as blocked (used with `BLOCKED` status) |
-| `blocked_reason` | No | Reason for the block |
+Manter um registro preciso e com timestamp do estado de desenvolvimento atual em `.specs/STATE.md`. Este script é chamado por outros scripts — não deve ser chamado diretamente pelo usuário a menos que precise corrigir manualmente o estado.
 
 ---
 
-## Valid States
+## Entradas
+
+| Parâmetro | Obrigatório | Descrição |
+|-----------|-------------|-----------|
+| `status` | Sim | Novo valor de estado (ver estados válidos abaixo) |
+| `feature` | Não | Nome da feature atualmente em desenvolvimento |
+| `current_task` | Não | ID da tarefa atualmente em andamento |
+| `note` | Não | Uma nota breve para adicionar ao histórico de status |
+| `blocked_task` | Não | ID da tarefa a marcar como bloqueada (usado com status `BLOCKED`) |
+| `blocked_reason` | Não | Motivo do bloqueio |
+
+---
+
+## Estados Válidos
 
 ```
 UNINITIALIZED
@@ -42,74 +42,74 @@ BLOCKED
 
 ---
 
-## Steps
+## Passos
 
-### Step 1 — Read Current STATE.md
+### Passo 1 — Ler STATE.md Atual
 
-Read `.specs/STATE.md`. If the file does not exist, create it using `references/state-template.md` as the base.
+Ler `.specs/STATE.md`. Se o arquivo não existir, criá-lo usando `references/state-template.md` como base.
 
-### Step 2 — Validate Transition
+### Passo 2 — Validar Transição
 
-Verify the new status is a valid state from the list above. If not, log an error and do not update the file.
+Verificar se o novo status é um estado válido da lista acima. Se não for, registrar um erro e não atualizar o arquivo.
 
-Optional: warn if the transition skips expected intermediate states (e.g., jumping from `UNINITIALIZED` directly to `TASK_IN_PROGRESS`), but do not block the update — the user may have a valid reason.
+Opcional: avisar se a transição pular estados intermediários esperados (ex.: saltar de `UNINITIALIZED` diretamente para `TASK_IN_PROGRESS`), mas não bloquear a atualização — o usuário pode ter uma razão válida.
 
-### Step 3 — Update Header Fields
+### Passo 3 — Atualizar Campos do Cabeçalho
 
-Update the top-level fields:
+Atualizar os campos de nível superior:
 
 ```markdown
-**Status**: [new status]
-**Feature**: [feature name or current value if not provided]
-**Current Task**: [task ID or '-' if not applicable]
+**Status**: [novo status]
+**Feature**: [nome da feature ou valor atual se não fornecido]
+**Current Task**: [ID da tarefa ou '-' se não aplicável]
 **Updated At**: [YYYY-MM-DD HH:MM]
 ```
 
-### Step 4 — Append to Status History
+### Passo 4 — Acrescentar ao Histórico de Status
 
-Add a new row to the Status History table:
+Adicionar uma nova linha à tabela de Histórico de Status:
 
 ```markdown
-| [YYYY-MM-DD HH:MM] | [new status] | [note if provided, otherwise '-'] |
+| [YYYY-MM-DD HH:MM] | [novo status] | [nota se fornecida, caso contrário '-'] |
 ```
 
-### Step 5 — Handle BLOCKED State
+### Passo 5 — Lidar com Estado BLOCKED
 
-If the new status is `BLOCKED`:
+Se o novo status for `BLOCKED`:
 
-1. Add or update the Blockers section:
+1. Adicionar ou atualizar a seção de Bloqueios:
    ```markdown
-   ## Blockers
+   ## Bloqueios
 
-   BLOCKED_TASK: [task ID]
-   BLOCKED_REASON: [reason]
+   BLOCKED_TASK: [ID da tarefa]
+   BLOCKED_REASON: [motivo]
    BLOCKED_AT: [YYYY-MM-DD HH:MM]
    ```
 
-### Step 6 — Handle FEATURE_COMPLETED State
+### Passo 6 — Lidar com Estado FEATURE_COMPLETED
 
-If the new status is `FEATURE_COMPLETED`:
+Se o novo status for `FEATURE_COMPLETED`:
 
-1. Clear the `Current Task` field: `-`.
-2. Add a note to the status history: `Feature [feature-name] completed`.
-3. Optionally add a learning to the Learnings section if a notable insight was gained during implementation.
+1. Limpar o campo `Current Task`: `-`.
+2. Adicionar uma nota ao histórico de status: `Feature [feature-name] concluída`.
+3. Opcionalmente adicionar um aprendizado à seção de Aprendizados se um insight notável foi obtido durante a implementação.
 
-### Step 7 — Write Updated STATE.md
+### Passo 7 — Escrever STATE.md Atualizado
 
-Write the updated content back to `.specs/STATE.md`.
-
----
-
-## Outputs
-
-- `.specs/STATE.md` updated with new status, timestamp, and history entry.
+Escrever o conteúdo atualizado de volta em `.specs/STATE.md`.
 
 ---
 
-## Example STATE.md After Update
+## Saídas
+
+- `.specs/STATE.md` atualizado com novo status, timestamp e entrada de histórico.
+
+---
+
+## Exemplo de STATE.md Após Atualização
 
 ```markdown
-# Project State
+# Estado do Projeto
 
 **Status**: TASK_IN_PROGRESS
 **Feature**: payment-retry
@@ -118,20 +118,20 @@ Write the updated content back to `.specs/STATE.md`.
 
 ---
 
-## Status History
+## Histórico de Status
 
-| Timestamp | Status | Notes |
+| Timestamp | Status | Notas |
 |-----------|--------|-------|
-| 2026-03-10 09:00 | UNINITIALIZED | Project initialized |
-| 2026-03-10 09:05 | CODEBASE_ANALYZED | Brownfield analysis complete |
-| 2026-03-11 10:00 | DESIGN_DEFINED | SDD for payment-retry approved |
-| 2026-03-11 15:00 | TASKS_GENERATED | 5 tasks generated |
-| 2026-03-12 09:00 | EXECUTION_PLAN_READY | Plan presented for approval |
-| 2026-03-12 09:10 | TASK_IN_PROGRESS | T-001 completed, starting T-002 |
+| 2026-03-10 09:00 | UNINITIALIZED | Projeto inicializado |
+| 2026-03-10 09:05 | CODEBASE_ANALYZED | Análise brownfield concluída |
+| 2026-03-11 10:00 | DESIGN_DEFINED | SDD para payment-retry aprovada |
+| 2026-03-11 15:00 | TASKS_GENERATED | 5 tarefas geradas |
+| 2026-03-12 09:00 | EXECUTION_PLAN_READY | Plano apresentado para aprovação |
+| 2026-03-12 09:10 | TASK_IN_PROGRESS | T-001 concluída, iniciando T-002 |
 
 ---
 
-## Current Feature
+## Feature Atual
 
 payment-retry
 
@@ -140,8 +140,8 @@ payment-retry
 
 ---
 
-## Error Handling
+## Tratamento de Erros
 
-- If `STATE.md` cannot be written (permission error), report immediately and halt the calling script.
-- If the status value is not in the valid states list, do not update and report the invalid value.
-- Never silently swallow update failures — always report them.
+- Se `STATE.md` não puder ser escrito (erro de permissão), reportar imediatamente e interromper o script chamador.
+- Se o valor de status não estiver na lista de estados válidos, não atualizar e reportar o valor inválido.
+- Nunca engolir silenciosamente falhas de atualização — sempre reportá-las.

@@ -1,119 +1,119 @@
 # Script: execute-task
 
-> Execute a single task following TDD, present the implementation for human review, and perform a controlled commit upon approval.
+> Executar uma única tarefa seguindo TDD, apresentar a implementação para revisão humana e realizar um commit controlado após aprovação.
 
 ---
 
-## Objective
+## Objetivo
 
-Implement one task from the approved execution plan. Follow TDD strictly. After implementation, present the result to the human for review. Upon approval, commit the changes with a conventional commit message. Ask whether to continue to the next task.
-
----
-
-## Inputs
-
-- Task ID (e.g., `T-001`).
-- `.specs/features/[feature-name]/tasks.md` — task definition.
-- `.specs/features/[feature-name]/execution.md` — execution plan and progress tracker.
-- `.specs/features/[feature-name]/spec.md` — requirements and acceptance criteria.
-- `.specs/features/[feature-name]/design.md` — design decisions.
-- `.specs/codebase/CONVENTIONS.md` — naming and coding conventions.
-- `.specs/codebase/TESTING.md` — test patterns.
+Implementar uma tarefa do plano de execução aprovado. Seguir TDD estritamente. Após a implementação, apresentar o resultado ao humano para revisão. Mediante aprovação, fazer commit das mudanças com uma mensagem de conventional commit. Perguntar se deve continuar para a próxima tarefa.
 
 ---
 
-## Pre-conditions
+## Entradas
 
-1. The execution plan must have been approved (STATE is `TASK_IN_PROGRESS` or approved by the user).
-2. All tasks listed as dependencies for the target task must be `Completed` in `execution.md`.
-3. The build must be clean before starting (run build and tests to confirm baseline).
+- ID da tarefa (ex.: `T-001`).
+- `.specs/features/[feature-name]/tasks.md` — definição da tarefa.
+- `.specs/features/[feature-name]/execution.md` — plano de execução e rastreador de progresso.
+- `.specs/features/[feature-name]/spec.md` — requisitos e critérios de aceitação.
+- `.specs/features/[feature-name]/design.md` — decisões de design.
+- `.specs/codebase/CONVENTIONS.md` — convenções de nomenclatura e código.
+- `.specs/codebase/TESTING.md` — padrões de teste.
 
 ---
 
-## Steps
+## Pré-condições
 
-### Step 1 — Read Task Definition
+1. O plano de execução deve ter sido aprovado (STATE está em `TASK_IN_PROGRESS` ou aprovado pelo usuário).
+2. Todas as tarefas listadas como dependências da tarefa alvo devem estar `Concluídas` em `execution.md`.
+3. O build deve estar limpo antes de iniciar (executar build e testes para confirmar a baseline).
 
-Read the target task from `tasks.md`. Extract:
-- Description.
-- TDD steps and test scenarios.
-- Acceptance criteria.
-- Dependencies (verify all are completed).
+---
 
-### Step 2 — Update STATE to `TASK_IN_PROGRESS`
+## Passos
 
-Call `scripts/update-state.md`:
+### Passo 1 — Ler Definição da Tarefa
+
+Ler a tarefa alvo de `tasks.md`. Extrair:
+- Descrição.
+- Passos de TDD e cenários de teste.
+- Critérios de aceitação.
+- Dependências (verificar se todas estão concluídas).
+
+### Passo 2 — Atualizar STATE para `TASK_IN_PROGRESS`
+
+Chamar `scripts/update-state.md`:
 ```
 Status: TASK_IN_PROGRESS
 Feature: [feature-name]
 Current Task: [T-XXX]
-Updated At: [current timestamp]
+Updated At: [timestamp atual]
 ```
 
-Update `execution.md` — mark the task as `In Progress` with start timestamp.
+Atualizar `execution.md` — marcar a tarefa como `Em Andamento` com timestamp de início.
 
-### Step 3 — TDD: Write Tests First (if coding task)
+### Passo 3 — TDD: Escrever Testes Primeiro (se tarefa de codificação)
 
-Before writing any implementation code:
+Antes de escrever qualquer código de implementação:
 
-1. Identify or create the test file at the path specified in the task definition.
-2. Write all test cases specified in the task's TDD steps:
-   - Happy path test(s).
-   - Error/failure test(s).
-   - Edge case test(s).
-3. Run the tests.
-4. **Confirm they FAIL** — if any test passes before implementation, the test is wrong. Fix the test before proceeding.
+1. Identificar ou criar o arquivo de teste no caminho especificado na definição da tarefa.
+2. Escrever todos os casos de teste especificados nos passos de TDD da tarefa:
+   - Teste(s) do happy path.
+   - Teste(s) de erro/falha.
+   - Teste(s) de caso extremo.
+3. Executar os testes.
+4. **Confirmar que FALHAM** — se algum teste passar antes da implementação, o teste está errado. Corrigir o teste antes de prosseguir.
 
-If this is NOT a coding task (e.g., documentation, migration script only, config), skip to Step 5.
+Se NÃO for uma tarefa de codificação (ex.: documentação, apenas script de migração, config), pular para o Passo 5.
 
-### Step 4 — Implement the Code
+### Passo 4 — Implementar o Código
 
-With failing tests in place, write the minimum production code required to make the tests pass:
+Com os testes falhando em posição, escrever o código de produção mínimo necessário para fazer os testes passarem:
 
-- Follow the design from `design.md`.
-- Follow naming conventions from `CONVENTIONS.md`.
-- Do not write more code than needed to satisfy the tests.
-- Do not implement behavior from other tasks.
+- Seguir o design de `design.md`.
+- Seguir as convenções de nomenclatura de `CONVENTIONS.md`.
+- Não escrever mais código do que o necessário para satisfazer os testes.
+- Não implementar comportamento de outras tarefas.
 
-After implementation:
-1. Run the tests for this task — **all must pass**.
-2. Run the full test suite — **no regressions allowed**.
-3. Run the build — **must compile without errors**.
+Após a implementação:
+1. Executar os testes desta tarefa — **todos devem passar**.
+2. Executar a suite completa de testes — **nenhuma regressão permitida**.
+3. Executar o build — **deve compilar sem erros**.
 
-If any test fails or the build breaks, fix the issue before proceeding. Do NOT skip or comment out failing tests.
+Se algum teste falhar ou o build quebrar, corrigir o problema antes de prosseguir. NÃO pular ou comentar testes falhando.
 
-### Step 5 — Verify Acceptance Criteria
+### Passo 5 — Verificar Critérios de Aceitação
 
-Read the acceptance criteria from the task definition. For each criterion:
-- Verify it is satisfied by the implementation.
-- If a criterion is not met, continue implementation until it is.
-- Check if any requirement from `spec.md` that this task traces to is now satisfied.
+Ler os critérios de aceitação da definição da tarefa. Para cada critério:
+- Verificar se está satisfeito pela implementação.
+- Se um critério não for atendido, continuar a implementação até que seja.
+- Verificar se algum requisito de `spec.md` que esta tarefa rastreia agora está satisfeito.
 
-### Step 6 — Update `execution.md`
+### Passo 6 — Atualizar `execution.md`
 
-Mark the task as `Review Pending` in the progress tracker.
+Marcar a tarefa como `Revisão Pendente` no rastreador de progresso.
 
-### Step 7 — Update `STATE.md` to `IMPLEMENTATION_REVIEW_PENDING`
+### Passo 7 — Atualizar `STATE.md` para `IMPLEMENTATION_REVIEW_PENDING`
 
-Call `scripts/update-state.md`:
+Chamar `scripts/update-state.md`:
 ```
 Status: IMPLEMENTATION_REVIEW_PENDING
 Feature: [feature-name]
 Current Task: [T-XXX]
-Updated At: [current timestamp]
+Updated At: [timestamp atual]
 ```
 
-### Step 8 — Present Implementation for Review (MANDATORY GATE)
+### Passo 8 — Apresentar Implementação para Revisão (GATE OBRIGATÓRIO)
 
-Present a summary of all changes made and request human review:
+Apresentar um resumo de todas as mudanças feitas e solicitar revisão humana:
 
 ```
-A tarefa [T-XXX]: "[task title]" foi implementada.
+A tarefa [T-XXX]: "[título da tarefa]" foi implementada.
 
 Arquivos criados/modificados:
-  + [new file path]
-  ~ [modified file path]
-  - [deleted file path]
+  + [caminho do novo arquivo]
+  ~ [caminho do arquivo modificado]
+  - [caminho do arquivo deletado]
 
 Resultados dos testes:
   ✓ [N] testes passando
@@ -122,124 +122,124 @@ Resultados dos testes:
 Build: OK
 
 Critérios de aceitação:
-  [X] [Criterion 1]
-  [X] [Criterion 2]
+  [X] [Critério 1]
+  [X] [Critério 2]
 
 Revise as mudanças e me informe se aprova o commit.
 ```
 
-Wait for explicit approval before committing.
+Aguardar aprovação explícita antes de fazer commit.
 
-### Step 9 — Handle Review Response
+### Passo 9 — Lidar com a Resposta de Revisão
 
-**If approved:** proceed to Step 10.
+**Se aprovado:** prosseguir para o Passo 10.
 
-**If changes requested:**
-- Apply the requested changes.
-- Re-run tests and build.
-- Return to Step 8 with the updated summary.
+**Se mudanças forem solicitadas:**
+- Aplicar as mudanças solicitadas.
+- Re-executar testes e build.
+- Retornar ao Passo 8 com o resumo atualizado.
 
-**If rejected entirely:**
-- Ask the user what should be done differently.
-- Revert or rework as instructed.
-- Return to Step 3 or Step 4 as appropriate.
+**Se rejeitado inteiramente:**
+- Perguntar ao usuário o que deve ser feito de forma diferente.
+- Reverter ou retrabalhar conforme instruído.
+- Retornar ao Passo 3 ou Passo 4 conforme apropriado.
 
-### Step 10 — Update STATE to `COMMIT_APPROVAL_PENDING`
+### Passo 10 — Atualizar STATE para `COMMIT_APPROVAL_PENDING`
 
-Call `scripts/update-state.md`:
+Chamar `scripts/update-state.md`:
 ```
 Status: COMMIT_APPROVAL_PENDING
 Feature: [feature-name]
 Current Task: [T-XXX]
-Updated At: [current timestamp]
+Updated At: [timestamp atual]
 ```
 
-### Step 11 — Generate Commit Message
+### Passo 11 — Gerar Mensagem de Commit
 
-Generate a commit message following the Conventional Commits specification:
+Gerar uma mensagem de commit seguindo a especificação Conventional Commits:
 
 ```
-<type>(<scope>): <short summary>
+<tipo>(<escopo>): <resumo curto>
 
-<optional body: what was done and why>
+<corpo opcional: o que foi feito e por quê>
 
 Refs: [FEAT-XXX-REQ-NNN], T-XXX
 ```
 
-Types: `feat`, `fix`, `test`, `refactor`, `docs`, `chore`, `perf`
+Tipos: `feat`, `fix`, `test`, `refactor`, `docs`, `chore`, `perf`
 
-Present to the user:
+Apresentar ao usuário:
 ```
 Mensagem de commit proposta:
 
-[commit message]
+[mensagem de commit]
 
 Confirma o commit?
 ```
 
-### Step 12 — Perform Commit
+### Passo 12 — Realizar Commit
 
-Upon confirmation:
-1. Stage all relevant files (`git add`).
-2. Commit with the approved message.
-3. Confirm the commit hash to the user.
+Após confirmação:
+1. Fazer stage de todos os arquivos relevantes (`git add`).
+2. Fazer commit com a mensagem aprovada.
+3. Confirmar o hash do commit ao usuário.
 
-### Step 13 — Update `execution.md` and `tasks.md`
+### Passo 13 — Atualizar `execution.md` e `tasks.md`
 
-- Mark the task as `Completed` with timestamp and commit hash in `execution.md`.
-- Mark the task checkbox as complete in `tasks.md`.
+- Marcar a tarefa como `Concluída` com timestamp e hash do commit em `execution.md`.
+- Marcar o checkbox da tarefa como completo em `tasks.md`.
 
-### Step 14 — Update `STATE.md`
+### Passo 14 — Atualizar `STATE.md`
 
-Check if all tasks in the feature are completed:
-- **If more tasks remain**: set state back to `TASK_IN_PROGRESS`.
-- **If all tasks completed**: set state to `FEATURE_COMPLETED`.
+Verificar se todas as tarefas da feature estão concluídas:
+- **Se houver mais tarefas**: definir o estado de volta para `TASK_IN_PROGRESS`.
+- **Se todas as tarefas estiverem concluídas**: definir o estado para `FEATURE_COMPLETED`.
 
-Call `scripts/update-state.md` accordingly.
+Chamar `scripts/update-state.md` conforme apropriado.
 
-### Step 15 — Ask to Continue
+### Passo 15 — Perguntar para Continuar
 
 ```
 [T-XXX] concluída e commitada.
 
-[If next task exists:]
-Próxima tarefa: [T-YYY] — "[next task title]"
+[Se houver próxima tarefa:]
+Próxima tarefa: [T-YYY] — "[título da próxima tarefa]"
 Dependências satisfeitas: Sim
 
 Deseja continuar com [T-YYY]?
 
-[If all tasks completed:]
+[Se todas as tarefas estiverem concluídas:]
 Todas as tarefas da feature "[feature-name]" foram concluídas.
 Status: FEATURE_COMPLETED
 ```
 
 ---
 
-## Outputs
+## Saídas
 
-- Implemented code in the project.
-- Updated `execution.md` (task marked Completed).
-- Updated `tasks.md` (task checkbox marked).
-- Updated `STATE.md`.
-- A git commit with conventional commit message.
-
----
-
-## TDD Invariants
-
-The following rules must NEVER be violated:
-
-1. Tests must be written BEFORE implementation code.
-2. Tests must FAIL before implementation (red phase).
-3. Tests must PASS after implementation (green phase).
-4. The build must be clean after each task.
-5. No test may be skipped, commented out, or marked as todo to make the suite pass.
+- Código implementado no projeto.
+- `execution.md` atualizado (tarefa marcada como Concluída).
+- `tasks.md` atualizado (checkbox da tarefa marcado).
+- `STATE.md` atualizado.
+- Um git commit com mensagem de conventional commit.
 
 ---
 
-## Error Handling
+## Invariantes de TDD
 
-- Build fails after implementation: fix the compilation error before presenting for review. Never present broken code.
-- Tests fail after implementation: debug and fix. Never leave failing tests.
-- Implementation breaks unrelated tests (regression): fix the regression before proceeding, even if it requires reworking the task approach.
-- User approval is not given after 3 review cycles: escalate to the user with a summary of the sticking points and ask how to proceed.
+As seguintes regras NUNCA devem ser violadas:
+
+1. Os testes devem ser escritos ANTES do código de implementação.
+2. Os testes devem FALHAR antes da implementação (fase vermelha).
+3. Os testes devem PASSAR após a implementação (fase verde).
+4. O build deve estar limpo após cada tarefa.
+5. Nenhum teste pode ser pulado, comentado ou marcado como todo para fazer a suite passar.
+
+---
+
+## Tratamento de Erros
+
+- Build falha após implementação: corrigir o erro de compilação antes de apresentar para revisão. Nunca apresentar código quebrado.
+- Testes falham após implementação: depurar e corrigir. Nunca deixar testes falhando.
+- A implementação quebra testes não relacionados (regressão): corrigir a regressão antes de prosseguir, mesmo que isso requeira retrabalhar a abordagem da tarefa.
+- Aprovação do usuário não é dada após 3 ciclos de revisão: escalar para o usuário com um resumo dos pontos de atrito e perguntar como prosseguir.

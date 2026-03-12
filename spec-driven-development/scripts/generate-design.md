@@ -1,174 +1,174 @@
 # Script: generate-design
 
-> Generate the design document (`design.md`) for a feature, including Mermaid diagrams.
+> Gerar o documento de design (`design.md`) para uma feature, incluindo diagramas Mermaid.
 
 ---
 
-## Objective
+## Objetivo
 
-Produce a complete design document that captures the architectural approach, component breakdown, data model changes, API contract, and visual diagrams (sequence diagram and flowchart). Write to `.specs/features/[feature-name]/design.md`. Update STATE.md to `DESIGN_DEFINED`.
-
----
-
-## Inputs
-
-- `.specs/features/[feature-name]/spec.md` — the approved feature specification.
-- `.specs/features/[feature-name]/context.md` — design decisions (if exists).
-- `.specs/codebase/ARCHITECTURE.md` — existing architectural patterns.
-- `.specs/codebase/STACK.md` — technology constraints.
-- `.specs/codebase/CONVENTIONS.md` — coding conventions.
+Produzir um documento de design completo que capture a abordagem arquitetural, decomposição de componentes, alterações no modelo de dados, contrato de API e diagramas visuais (diagrama de sequência e flowchart). Escrever em `.specs/features/[feature-name]/design.md`. Atualizar STATE.md para `DESIGN_DEFINED`.
 
 ---
 
-## Pre-conditions
+## Entradas
 
-1. `spec.md` must exist for the target feature.
-2. Read all input documents before starting.
-3. The design must be consistent with the existing architecture documented in `ARCHITECTURE.md`.
+- `.specs/features/[feature-name]/spec.md` — a especificação aprovada da feature.
+- `.specs/features/[feature-name]/context.md` — decisões de design (se existir).
+- `.specs/codebase/ARCHITECTURE.md` — padrões arquiteturais existentes.
+- `.specs/codebase/STACK.md` — restrições tecnológicas.
+- `.specs/codebase/CONVENTIONS.md` — convenções de código.
 
 ---
 
-## Steps
+## Pré-condições
 
-### Step 1 — Read and Internalize Inputs
+1. `spec.md` deve existir para a feature alvo.
+2. Ler todos os documentos de entrada antes de começar.
+3. O design deve ser consistente com a arquitetura existente documentada em `ARCHITECTURE.md`.
 
-Read in order:
-1. `spec.md` — understand all requirements and acceptance criteria.
-2. `context.md` — understand decisions and constraints.
-3. `ARCHITECTURE.md` — understand existing patterns to follow.
-4. `STACK.md` — understand technology constraints.
+---
 
-### Step 2 — Define Architectural Approach
+## Passos
 
-Decide how this feature fits into the existing architecture:
-- Which layers are involved?
-- Are new components needed, or can existing ones be extended?
-- Does this feature introduce new external integrations?
-- Does this feature require database schema changes?
+### Passo 1 — Ler e Internalizar as Entradas
 
-If a significant architectural decision needs to be made that is not covered by existing documentation, document it in the design under "Design Decisions."
+Ler na ordem:
+1. `spec.md` — entender todos os requisitos e critérios de aceitação.
+2. `context.md` — entender decisões e restrições.
+3. `ARCHITECTURE.md` — entender os padrões existentes a seguir.
+4. `STACK.md` — entender as restrições tecnológicas.
 
-### Step 3 — Define Components
+### Passo 2 — Definir Abordagem Arquitetural
 
-For each component involved:
-- Name it following the project's naming conventions.
-- Assign it to the correct architectural layer.
-- Define its single responsibility.
-- Identify its inputs and outputs.
+Decidir como esta feature se encaixa na arquitetura existente:
+- Quais camadas estão envolvidas?
+- São necessários novos componentes, ou os existentes podem ser estendidos?
+- Esta feature introduz novas integrações externas?
+- Esta feature requer mudanças no schema do banco de dados?
 
-### Step 4 — Define Data Model Changes
+Se uma decisão arquitetural significativa precisar ser tomada e não estiver coberta pela documentação existente, documentá-la no design em "Decisões de Design".
 
-For each entity or table affected:
-- Document new fields, types, and constraints.
-- Document new tables or collections.
-- Note any migration implications.
+### Passo 3 — Definir Componentes
 
-### Step 5 — Define API Contract
+Para cada componente envolvido:
+- Nomeá-lo seguindo as convenções de nomenclatura do projeto.
+- Atribuí-lo à camada arquitetural correta.
+- Definir sua responsabilidade única.
+- Identificar suas entradas e saídas.
 
-For each public interface exposed by this feature (HTTP endpoints, event contracts, CLI commands):
-- Define the request structure.
-- Define the success response.
-- Define all error responses with status codes and error codes.
+### Passo 4 — Definir Mudanças no Modelo de Dados
 
-### Step 6 — Create Sequence Diagram
+Para cada entidade ou tabela afetada:
+- Documentar novos campos, tipos e restrições.
+- Documentar novas tabelas ou coleções.
+- Observar implicações de migração.
 
-Create a Mermaid sequence diagram that shows the complete happy-path flow through the system, from the entry point to persistence/response.
+### Passo 5 — Definir Contrato de API
 
-Requirements:
-- Include all components defined in Step 3.
-- Include external services if applicable.
-- Show the response path back to the caller.
-- Use clear, descriptive labels on arrows.
+Para cada interface pública exposta por esta feature (endpoints HTTP, contratos de evento, comandos CLI):
+- Definir a estrutura da requisição.
+- Definir a resposta de sucesso.
+- Definir todas as respostas de erro com códigos de status e códigos de erro.
+
+### Passo 6 — Criar Diagrama de Sequência
+
+Criar um diagrama de sequência Mermaid que mostre o fluxo completo do happy path pelo sistema, do ponto de entrada à persistência/resposta.
+
+Requisitos:
+- Incluir todos os componentes definidos no Passo 3.
+- Incluir serviços externos se aplicável.
+- Mostrar o caminho de resposta de volta ao chamador.
+- Usar rótulos claros e descritivos nas setas.
 
 ```mermaid
 sequenceDiagram
-    participant [Actor/Client]
-    participant [Component 1]
+    participant [Ator/Cliente]
+    participant [Componente 1]
     ...
-    [Actor/Client]->>[Component 1]: [Action with payload]
+    [Ator/Cliente]->>[Componente 1]: [Ação com payload]
     ...
 ```
 
-### Step 7 — Create Flowchart
+### Passo 7 — Criar Flowchart
 
-Create a Mermaid flowchart that shows the decision logic and alternative flows (including error handling).
+Criar um flowchart Mermaid que mostre a lógica de decisão e fluxos alternativos (incluindo tratamento de erros).
 
-Requirements:
-- Include all decision points.
-- Include error/exception paths.
-- Use clear labels on decision nodes (`{Is condition?}`).
-- Start with a rounded `([Start])` and end with rounded `([End])` nodes.
+Requisitos:
+- Incluir todos os pontos de decisão.
+- Incluir caminhos de erro/exceção.
+- Usar rótulos claros nos nós de decisão (`{Condição?}`).
+- Iniciar com um nó arredondado `([Início])` e terminar com `([Fim])`.
 
 ```mermaid
 flowchart TD
-    A([Start]) --> B{Condition?}
+    A([Início]) --> B{Condição?}
     ...
 ```
 
-### Step 8 — Define Error Handling Strategy
+### Passo 8 — Definir Estratégia de Tratamento de Erros
 
-For each identified failure scenario:
-- Name the error type.
-- Define the HTTP status code or error code.
-- Define the user-facing response.
-- Define the recovery strategy (retry, fail-fast, fallback).
+Para cada cenário de falha identificado:
+- Nomear o tipo de erro.
+- Definir o código de status HTTP ou código de erro.
+- Definir a resposta ao usuário.
+- Definir a estratégia de recuperação (retry, fail-fast, fallback).
 
-### Step 9 — Document Design Decisions
+### Passo 9 — Documentar Decisões de Design
 
-For each non-obvious design decision:
-- Describe the decision made.
-- List alternatives that were considered.
-- Explain the rationale for the chosen approach.
+Para cada decisão de design não óbvia:
+- Descrever a decisão tomada.
+- Listar alternativas que foram consideradas.
+- Explicar a justificativa para a abordagem escolhida.
 
-### Step 10 — Build Traceability Matrix
+### Passo 10 — Construir Matriz de Rastreabilidade
 
-Map each design section back to the requirements from `spec.md`:
-- Which requirement(s) does each component satisfy?
-- Which acceptance criterion is covered by which design decision?
+Mapear cada seção do design de volta aos requisitos de `spec.md`:
+- Qual(is) requisito(s) cada componente satisfaz?
+- Qual critério de aceitação é coberto por qual decisão de design?
 
-### Step 11 — Write `design.md`
+### Passo 11 — Escrever `design.md`
 
-Using `references/design-template.md` as the base, populate all sections with the information gathered in Steps 2–10.
+Usando `references/design-template.md` como base, preencher todas as seções com as informações coletadas nos Passos 2–10.
 
-Write to: `.specs/features/[feature-name]/design.md`
+Escrever em: `.specs/features/[feature-name]/design.md`
 
-### Step 12 — Update `STATE.md`
+### Passo 12 — Atualizar `STATE.md`
 
-Call `scripts/update-state.md` with:
+Chamar `scripts/update-state.md` com:
 ```
 Status: DESIGN_DEFINED
 Feature: [feature-name]
-Updated At: [current timestamp]
+Updated At: [timestamp atual]
 ```
 
 ---
 
-## Outputs
+## Saídas
 
-- `.specs/features/[feature-name]/design.md` — complete design document.
-- `.specs/STATE.md` updated to `DESIGN_DEFINED`.
-
----
-
-## Quality Checklist
-
-Before considering the design complete, verify:
-
-- [ ] All functional requirements from spec.md are addressed in the design.
-- [ ] All non-functional requirements are addressed (performance, security, scalability).
-- [ ] Sequence diagram covers the complete happy-path flow.
-- [ ] Flowchart covers all decision points including error paths.
-- [ ] Data model changes are fully specified.
-- [ ] API contracts are fully specified (request + response + errors).
-- [ ] Error handling strategy is defined for all failure scenarios.
-- [ ] Design is consistent with ARCHITECTURE.md.
-- [ ] All design decisions are documented with rationale.
-- [ ] Traceability matrix is complete.
+- `.specs/features/[feature-name]/design.md` — documento de design completo.
+- `.specs/STATE.md` atualizado para `DESIGN_DEFINED`.
 
 ---
 
-## Error Handling
+## Checklist de Qualidade
 
-- If `spec.md` is incomplete or ambiguous, do not guess — go back to `generate-sdd.md` and resolve the gaps first.
-- If a design decision contradicts the existing architecture, flag it explicitly and ask the user for guidance before proceeding.
-- If a Mermaid diagram becomes too complex (more than 15 nodes), split it into sub-diagrams with clear titles.
+Antes de considerar o design completo, verificar:
+
+- [ ] Todos os requisitos funcionais de spec.md estão endereçados no design.
+- [ ] Todos os requisitos não funcionais estão endereçados (performance, segurança, escalabilidade).
+- [ ] O diagrama de sequência cobre o fluxo completo do happy path.
+- [ ] O flowchart cobre todos os pontos de decisão incluindo caminhos de erro.
+- [ ] As mudanças no modelo de dados estão totalmente especificadas.
+- [ ] Os contratos de API estão totalmente especificados (requisição + resposta + erros).
+- [ ] A estratégia de tratamento de erros está definida para todos os cenários de falha.
+- [ ] O design é consistente com ARCHITECTURE.md.
+- [ ] Todas as decisões de design estão documentadas com justificativa.
+- [ ] A matriz de rastreabilidade está completa.
+
+---
+
+## Tratamento de Erros
+
+- Se `spec.md` estiver incompleto ou ambíguo, não adivinhar — voltar a `generate-sdd.md` e resolver as lacunas primeiro.
+- Se uma decisão de design contradizer a arquitetura existente, sinalizá-la explicitamente e pedir orientação ao usuário antes de prosseguir.
+- Se um diagrama Mermaid se tornar muito complexo (mais de 15 nós), dividi-lo em sub-diagramas com títulos claros.

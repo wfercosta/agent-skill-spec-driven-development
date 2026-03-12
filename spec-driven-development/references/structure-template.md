@@ -1,101 +1,101 @@
-# Structure: [PROJECT NAME]
+# Estrutura: [NOME DO PROJETO]
 
-> Directory layout, module organization, and key file locations.
+> Layout de diretórios, organização de módulos e localização dos arquivos principais.
 
 ---
 
-## Root Layout
+## Layout Raiz
 
 ```
 [project-root]/
-├── src/                    # Application source code
-├── test/                   # Test files (if separate from src)
-├── .specs/                 # Spec-driven development artifacts
-├── docs/                   # Additional documentation (optional)
-├── scripts/                # Utility scripts (build, seed, etc.)
-├── docker/                 # Docker configuration files
-├── [config files]          # tsconfig.json, package.json, .eslintrc, etc.
+├── src/                    # Código-fonte da aplicação
+├── test/                   # Arquivos de teste (se separados de src)
+├── .specs/                 # Artefatos de desenvolvimento orientado a especificações
+├── docs/                   # Documentação adicional (opcional)
+├── scripts/                # Scripts utilitários (build, seed, etc.)
+├── docker/                 # Arquivos de configuração Docker
+├── [arquivos de config]    # tsconfig.json, package.json, .eslintrc, etc.
 └── README.md
 ```
 
 ---
 
-## Source Directory (`src/`)
+## Diretório Fonte (`src/`)
 
 ```
 src/
-├── [module-1]/             # [Describe purpose, e.g., domain entities]
-│   ├── [entity].ts
-│   └── index.ts            # Public API of the module
+├── [modulo-1]/             # [Descrever propósito, ex.: entidades de domínio]
+│   ├── [entidade].ts
+│   └── index.ts            # API pública do módulo
 │
-├── [module-2]/             # [Describe purpose, e.g., use cases]
-│   ├── [use-case].ts
+├── [modulo-2]/             # [Descrever propósito, ex.: casos de uso]
+│   ├── [caso-de-uso].ts
 │   └── index.ts
 │
-├── [module-3]/             # [Describe purpose, e.g., infrastructure adapters]
+├── [modulo-3]/             # [Descrever propósito, ex.: adapters de infraestrutura]
 │   ├── [adapter].ts
 │   └── index.ts
 │
-├── [module-4]/             # [Describe purpose, e.g., HTTP controllers]
+├── [modulo-4]/             # [Descrever propósito, ex.: controllers HTTP]
 │   ├── [controller].ts
 │   └── index.ts
 │
-├── shared/                 # Shared utilities, types, errors
+├── shared/                 # Utilitários compartilhados, tipos, erros
 │   ├── errors.ts
 │   ├── types.ts
 │   └── utils.ts
 │
-└── main.ts                 # Application entry point
+└── main.ts                 # Ponto de entrada da aplicação
 ```
 
 ---
 
-## Test Directory (`test/`)
+## Diretório de Testes (`test/`)
 
 ```
 test/
-├── unit/                   # Pure unit tests (no I/O)
-│   └── [mirrors src/ structure]
+├── unit/                   # Testes puramente unitários (sem I/O)
+│   └── [espelha estrutura src/]
 │
-├── integration/            # Tests with real dependencies (DB, queues)
-│   └── [feature or module]
+├── integration/            # Testes com dependências reais (DB, filas)
+│   └── [feature ou módulo]
 │
-└── e2e/                    # Full end-to-end tests
-    └── [scenario]
+└── e2e/                    # Testes end-to-end completos
+    └── [cenário]
 ```
 
 ---
 
-## Key Files
+## Arquivos Principais
 
-| File | Purpose |
-|------|---------|
-| `src/main.ts` | Application bootstrap |
-| `src/shared/errors.ts` | Domain error definitions |
-| `src/shared/types.ts` | Shared type definitions |
-| `tsconfig.json` | TypeScript configuration |
-| `package.json` | Dependencies and scripts |
-| `.env.example` | Environment variable documentation |
-| `docker-compose.yml` | Local development services |
+| Arquivo | Propósito |
+|---------|-----------|
+| `src/main.ts` | Bootstrap da aplicação |
+| `src/shared/errors.ts` | Definições de erros de domínio |
+| `src/shared/types.ts` | Definições de tipos compartilhados |
+| `tsconfig.json` | Configuração TypeScript |
+| `package.json` | Dependências e scripts |
+| `.env.example` | Documentação de variáveis de ambiente |
+| `docker-compose.yml` | Serviços para desenvolvimento local |
 
 ---
 
-## Module Boundaries
+## Fronteiras de Módulos
 
-Each module exposes a public API through its `index.ts`. Imports from outside a module must go through `index.ts` — never import internal files directly.
+Cada módulo expõe uma API pública através de seu `index.ts`. Imports externos a um módulo devem passar por `index.ts` — nunca importar arquivos internos diretamente.
 
 ```typescript
-// Correct
+// Correto
 import { User } from '@/domain';
 
-// Wrong
+// Errado
 import { User } from '@/domain/entities/user.entity';
 ```
 
 ---
 
-## Notes
+## Notas
 
-<!-- Any project-specific structural decisions or deviations from the template -->
+<!-- Decisões estruturais específicas do projeto ou desvios do template -->
 
 -

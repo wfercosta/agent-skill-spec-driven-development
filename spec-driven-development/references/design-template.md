@@ -1,104 +1,104 @@
-# Design: [FEATURE NAME]
+# Design: [NOME DA FEATURE]
 
-> Architectural design and component breakdown for [FEATURE NAME].
+> Design arquitetural e decomposição de componentes para [NOME DA FEATURE].
 
 **Feature ID**: [FEAT-XXX]
-**Status**: Draft | Under Review | Approved
-**Created At**: [YYYY-MM-DD]
-**Last Updated**: [YYYY-MM-DD]
+**Status**: Rascunho | Em Revisão | Aprovado
+**Criado Em**: [YYYY-MM-DD]
+**Última Atualização**: [YYYY-MM-DD]
 
 ---
 
-## 1. Architectural Overview
+## 1. Visão Geral Arquitetural
 
-[Describe the high-level approach. What architectural patterns are applied? How does this feature fit into the existing system architecture?]
-
----
-
-## 2. Components
-
-| Component | Layer | Responsibility |
-|-----------|-------|----------------|
-| [e.g., PaymentController] | Interface | Receives HTTP, validates input, delegates |
-| [e.g., ProcessPaymentUseCase] | Application | Orchestrates domain + side effects |
-| [e.g., Payment] | Domain | Entity with payment business rules |
-| [e.g., PaymentRepository] | Infrastructure | Persists payment records |
-| [e.g., StripeGateway] | Infrastructure | Calls Stripe API |
+[Descrever a abordagem de alto nível. Quais padrões arquiteturais são aplicados? Como esta feature se encaixa na arquitetura do sistema existente?]
 
 ---
 
-## 3. Data Model
+## 2. Componentes
 
-### New Entities / Tables
+| Componente | Camada | Responsabilidade |
+|------------|--------|-----------------|
+| [ex.: PaymentController] | Interface | Recebe HTTP, valida entrada, delega |
+| [ex.: ProcessPaymentUseCase] | Application | Orquestra domínio + efeitos colaterais |
+| [ex.: Payment] | Domain | Entidade com regras de negócio de pagamento |
+| [ex.: PaymentRepository] | Infrastructure | Persiste registros de pagamento |
+| [ex.: StripeGateway] | Infrastructure | Chama a API do Stripe |
+
+---
+
+## 3. Modelo de Dados
+
+### Novas Entidades / Tabelas
 
 ```
-[TableName]
+[NomeDaTabela]
 - id: UUID (PK)
-- [field]: [type] — [description]
+- [campo]: [tipo] — [descrição]
 - created_at: TIMESTAMP
 - updated_at: TIMESTAMP
 ```
 
-### Modified Entities / Tables
+### Entidades / Tabelas Modificadas
 
-| Entity | Change | Reason |
-|--------|--------|--------|
-| [User] | Add `payment_method_id` field | Link user to payment method |
+| Entidade | Mudança | Motivo |
+|----------|---------|--------|
+| [User] | Adicionar campo `payment_method_id` | Vincular usuário ao método de pagamento |
 
 ---
 
-## 4. API Contract
+## 4. Contrato de API
 
-### Endpoints (if applicable)
+### Endpoints (se aplicável)
 
-#### `POST /[resource]`
+#### `POST /[recurso]`
 
-**Request:**
+**Requisição:**
 ```json
 {
-  "field": "value"
+  "campo": "valor"
 }
 ```
 
-**Response (200):**
+**Resposta (200):**
 ```json
 {
   "id": "uuid",
-  "field": "value"
+  "campo": "valor"
 }
 ```
 
-**Error Responses:**
-| Status | Code | Condition |
-|--------|------|-----------|
-| 400 | VALIDATION_ERROR | Invalid input |
-| 409 | CONFLICT | Resource already exists |
-| 500 | INTERNAL_ERROR | Unexpected failure |
+**Respostas de Erro:**
+| Status | Código | Condição |
+|--------|--------|----------|
+| 400 | VALIDATION_ERROR | Entrada inválida |
+| 409 | CONFLICT | Recurso já existe |
+| 500 | INTERNAL_ERROR | Falha inesperada |
 
 ---
 
-## 5. Sequence Diagram
+## 5. Diagrama de Sequência
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant Cliente
     participant Controller
-    participant UseCase
-    participant Domain
-    participant Repository
-    participant ExternalService
+    participant CasoDeUso
+    participant Dominio
+    participant Repositorio
+    participant ServicoExterno
 
-    Client->>Controller: POST /resource {payload}
-    Controller->>Controller: Validate input (Zod)
-    Controller->>UseCase: execute(input)
-    UseCase->>Domain: create(input)
-    Domain-->>UseCase: entity
-    UseCase->>Repository: save(entity)
-    Repository-->>UseCase: saved entity
-    UseCase->>ExternalService: notify(entity)
-    ExternalService-->>UseCase: ack
-    UseCase-->>Controller: result
-    Controller-->>Client: 201 {response}
+    Cliente->>Controller: POST /recurso {payload}
+    Controller->>Controller: Validar entrada (Zod)
+    Controller->>CasoDeUso: execute(input)
+    CasoDeUso->>Dominio: create(input)
+    Dominio-->>CasoDeUso: entidade
+    CasoDeUso->>Repositorio: save(entidade)
+    Repositorio-->>CasoDeUso: entidade salva
+    CasoDeUso->>ServicoExterno: notify(entidade)
+    ServicoExterno-->>CasoDeUso: ack
+    CasoDeUso-->>Controller: resultado
+    Controller-->>Cliente: 201 {resposta}
 ```
 
 ---
@@ -107,19 +107,19 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    A([Start]) --> B{Input valid?}
-    B -->|No| C[Return 400 Validation Error]
-    B -->|Yes| D{Resource exists?}
-    D -->|Yes| E[Return 409 Conflict]
-    D -->|No| F[Create entity]
-    F --> G[Persist to database]
-    G --> H{External call needed?}
-    H -->|Yes| I[Call external service]
-    I --> J{External call OK?}
-    J -->|No| K[Log error + retry or fail]
-    J -->|Yes| L[Return 201 success]
-    H -->|No| L
-    C --> Z([End])
+    A([Início]) --> B{Entrada válida?}
+    B -->|Não| C[Retornar 400 Erro de Validação]
+    B -->|Sim| D{Recurso existe?}
+    D -->|Sim| E[Retornar 409 Conflito]
+    D -->|Não| F[Criar entidade]
+    F --> G[Persistir no banco de dados]
+    G --> H{Chamada externa necessária?}
+    H -->|Sim| I[Chamar serviço externo]
+    I --> J{Chamada OK?}
+    J -->|Não| K[Registrar erro + retry ou falhar]
+    J -->|Sim| L[Retornar 201 sucesso]
+    H -->|Não| L
+    C --> Z([Fim])
     E --> Z
     K --> Z
     L --> Z
@@ -127,36 +127,36 @@ flowchart TD
 
 ---
 
-## 7. Error Handling Strategy
+## 7. Estratégia de Tratamento de Erros
 
-| Scenario | Error Type | Response | Recovery |
-|----------|------------|----------|---------|
-| Invalid input | ValidationError | 400 | User corrects input |
-| Duplicate resource | ConflictError | 409 | User resolves conflict |
-| External service failure | IntegrationError | 502 | Retry with backoff |
-| Unexpected failure | InternalError | 500 | Log + alert |
-
----
-
-## 8. Design Decisions
-
-| Decision | Alternatives Considered | Rationale |
-|----------|------------------------|-----------|
-| [e.g., Use idempotency key] | [e.g., No key, check-then-act] | [Prevents duplicate processing under retries] |
+| Cenário | Tipo de Erro | Resposta | Recuperação |
+|---------|-------------|----------|-------------|
+| Entrada inválida | ValidationError | 400 | Usuário corrige a entrada |
+| Recurso duplicado | ConflictError | 409 | Usuário resolve o conflito |
+| Falha de serviço externo | IntegrationError | 502 | Retry com backoff |
+| Falha inesperada | InternalError | 500 | Log + alerta |
 
 ---
 
-## 9. Requirements Traceability
+## 8. Decisões de Design
 
-| Design Section | Requirement(s) | Notes |
-|----------------|----------------|-------|
-| §2 Components | FEAT-XXX-REQ-001 | Satisfies through X |
-| §4 API Contract | FEAT-XXX-REQ-002 | POST endpoint |
+| Decisão | Alternativas Consideradas | Justificativa |
+|---------|--------------------------|---------------|
+| [ex.: Usar chave de idempotência] | [ex.: Sem chave, check-then-act] | [Previne processamento duplicado sob retentativas] |
 
 ---
 
-## Notes
+## 9. Rastreabilidade de Requisitos
 
-<!-- Implementation notes, warnings, or considerations for the implementing agent -->
+| Seção do Design | Requisito(s) | Notas |
+|-----------------|-------------|-------|
+| §2 Componentes | FEAT-XXX-REQ-001 | Satisfaz através de X |
+| §4 Contrato de API | FEAT-XXX-REQ-002 | Endpoint POST |
+
+---
+
+## Notas
+
+<!-- Notas de implementação, avisos ou considerações para o agente que irá implementar -->
 
 -

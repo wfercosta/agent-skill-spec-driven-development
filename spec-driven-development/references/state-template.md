@@ -1,4 +1,4 @@
-# State: [PROJECT NAME]
+# Estado: [NOME DO PROJETO]
 
 **Status**: UNINITIALIZED
 **Feature**: -
@@ -7,37 +7,37 @@
 
 ---
 
-## Status History
+## Histórico de Status
 
-| Timestamp | Status | Notes |
+| Timestamp | Status | Notas |
 |-----------|--------|-------|
-| [YYYY-MM-DD HH:MM] | UNINITIALIZED | Project initialized |
+| [YYYY-MM-DD HH:MM] | UNINITIALIZED | Projeto inicializado |
 
 ---
 
-## Current Feature
+## Feature Atual
 
-<!-- Name of the feature currently being developed -->
+<!-- Nome da feature atualmente em desenvolvimento -->
 
 -
 
 ---
 
-## Decisions
+## Decisões
 
-<!-- Key decisions made during development. Format: [date] Decision: reason -->
+<!-- Decisões principais tomadas durante o desenvolvimento. Formato: [data] Decisão: motivo -->
 
 -
 
 ---
 
-## Blockers
+## Bloqueios
 
-<!-- Active blockers. Remove when resolved. -->
+<!-- Bloqueios ativos. Remover quando resolvidos. -->
 
-<!-- Example:
+<!-- Exemplo:
 BLOCKED_TASK: T-XXX
-BLOCKED_REASON: [description]
+BLOCKED_REASON: [descrição]
 BLOCKED_AT: [timestamp]
 -->
 
@@ -45,24 +45,24 @@ BLOCKED_AT: [timestamp]
 
 ---
 
-## Learnings
+## Aprendizados
 
-<!-- Insights, gotchas, and lessons learned during development -->
-
--
-
----
-
-## Todos
-
-<!-- Pending items not yet formalized as tasks -->
+<!-- Insights, armadilhas e lições aprendidas durante o desenvolvimento -->
 
 -
 
 ---
 
-## Deferred Ideas
+## Pendências
 
-<!-- Ideas to consider in future iterations — do not implement now -->
+<!-- Itens pendentes ainda não formalizados como tarefas -->
+
+-
+
+---
+
+## Ideias Adiadas
+
+<!-- Ideias para considerar em iterações futuras — não implementar agora -->
 
 -

@@ -1,187 +1,187 @@
 # Script: generate-tasks
 
-> Decompose a feature SDD into atomic, implementable tasks with explicit dependencies and parallelism opportunities.
+> Decompor um SDD de feature em tarefas atômicas e implementáveis com dependências explícitas e oportunidades de paralelismo.
 
 ---
 
-## Objective
+## Objetivo
 
-Produce a complete `tasks.md` and `graph.yaml` for a feature by breaking down the SDD into the smallest possible tasks that leave the application in a buildable state. Each coding task must follow the TDD pattern. Update STATE.md to `TASKS_GENERATED`.
+Produzir um `tasks.md` e `graph.yaml` completos para uma feature quebrando o SDD nas menores tarefas possíveis que deixem a aplicação em estado compilável. Cada tarefa de codificação deve seguir o padrão TDD. Atualizar STATE.md para `TASKS_GENERATED`.
 
 ---
 
-## Inputs
+## Entradas
 
 - `.specs/features/[feature-name]/spec.md`
 - `.specs/features/[feature-name]/design.md`
-- `.specs/features/[feature-name]/context.md` (if exists)
+- `.specs/features/[feature-name]/context.md` (se existir)
 - `.specs/codebase/ARCHITECTURE.md`
 - `.specs/codebase/TESTING.md`
 - `.specs/codebase/CONVENTIONS.md`
 
 ---
 
-## Pre-conditions
+## Pré-condições
 
-1. `spec.md` and `design.md` must exist for the target feature.
-2. Read all input documents before starting.
-3. `STATE.md` must be at `DESIGN_DEFINED` or later.
+1. `spec.md` e `design.md` devem existir para a feature alvo.
+2. Ler todos os documentos de entrada antes de começar.
+3. `STATE.md` deve estar em `DESIGN_DEFINED` ou posterior.
 
 ---
 
-## Steps
+## Passos
 
-### Step 1 — Read and Internalize All Inputs
+### Passo 1 — Ler e Internalizar Todas as Entradas
 
-Read `spec.md`, `design.md`, `context.md`, and the codebase documents.
+Ler `spec.md`, `design.md`, `context.md` e os documentos da base de código.
 
-Extract:
-- All acceptance criteria from `spec.md`.
-- All components from `design.md`.
-- Data model changes.
-- API contracts.
-- Error handling requirements.
+Extrair:
+- Todos os critérios de aceitação de `spec.md`.
+- Todos os componentes de `design.md`.
+- Mudanças no modelo de dados.
+- Contratos de API.
+- Requisitos de tratamento de erros.
 
-### Step 2 — Identify Work Areas
+### Passo 2 — Identificar Áreas de Trabalho
 
-Group work into logical areas based on the design:
+Agrupar o trabalho em áreas lógicas com base no design:
 
-1. **Infrastructure / Setup** — scaffolding, config, migrations, new modules.
-2. **Domain** — entities, value objects, business rules.
-3. **Application** — use cases, orchestration.
-4. **Infrastructure Adapters** — repositories, external service clients, event publishers.
-5. **Interface** — HTTP controllers, CLI commands, event consumers.
-6. **Tests** — integration tests, e2e tests (unit tests are part of each coding task).
-7. **Documentation** — updates to codebase docs if architecture changes.
+1. **Infraestrutura / Setup** — scaffolding, config, migrações, novos módulos.
+2. **Domínio** — entidades, value objects, regras de negócio.
+3. **Aplicação** — casos de uso, orquestração.
+4. **Adapters de Infraestrutura** — repositórios, clientes de serviços externos, publicadores de eventos.
+5. **Interface** — controllers HTTP, comandos CLI, consumidores de eventos.
+6. **Testes** — testes de integração, testes e2e (testes unitários fazem parte de cada tarefa de codificação).
+7. **Documentação** — atualizações dos docs da base de código se a arquitetura mudar.
 
-### Step 3 — Decompose into Atomic Tasks
+### Passo 3 — Decompor em Tarefas Atômicas
 
-For each work area, create the smallest possible task that:
-- Has a single, clear responsibility.
-- Leaves the application in a **compilable and runnable state** when complete.
-- Has measurable acceptance criteria.
-- Can be reviewed in isolation.
+Para cada área de trabalho, criar a menor tarefa possível que:
+- Tenha uma única responsabilidade clara.
+- Deixe a aplicação em um **estado compilável e executável** quando concluída.
+- Tenha critérios de aceitação mensuráveis.
+- Possa ser revisada de forma isolada.
 
-**Decomposition rules:**
-- One task per entity or value object.
-- One task per use case.
-- One task per repository interface + implementation.
-- One task per HTTP endpoint or CLI command.
-- One task per external integration adapter.
-- One task for database migrations (separate from entity creation).
-- One task for integration/e2e tests if they span multiple components.
+**Regras de decomposição:**
+- Uma tarefa por entidade ou value object.
+- Uma tarefa por caso de uso.
+- Uma tarefa por interface de repositório + implementação.
+- Uma tarefa por endpoint HTTP ou comando CLI.
+- Uma tarefa por adapter de integração externa.
+- Uma tarefa para migrações de banco de dados (separada da criação de entidades).
+- Uma tarefa para testes de integração/e2e se abrangerem múltiplos componentes.
 
-**Task numbering:** `T-001`, `T-002`, ..., `T-NNN` (sequential within the feature).
+**Numeração das tarefas:** `T-001`, `T-002`, ..., `T-NNN` (sequencial dentro da feature).
 
-### Step 4 — Apply TDD Pattern to Coding Tasks
+### Passo 4 — Aplicar Padrão TDD às Tarefas de Codificação
 
-For every task that involves writing, modifying, or deleting code:
+Para cada tarefa que envolva escrever, modificar ou deletar código:
 
-Mark it as requiring TDD and structure the TDD steps:
-
-```
-TDD Steps:
-1. Write tests in [test file path] covering:
-   - [Test scenario 1: happy path]
-   - [Test scenario 2: error case]
-   - [Test scenario N: edge case]
-2. Confirm tests fail.
-3. Implement [specific code].
-4. Confirm tests pass.
-5. Run full test suite and build.
-```
-
-Test file paths must follow the project's testing conventions from `TESTING.md`.
-
-### Step 5 — Identify Dependencies
-
-For each task, determine which other tasks must be complete before it can start:
-
-- A use case task depends on the domain entity task.
-- An HTTP controller task depends on the use case task.
-- A repository implementation task depends on the domain interface task.
-- A migration task that is required for a use case to work creates a dependency.
-- Tasks that are independent have `depends_on: []`.
-
-### Step 6 — Identify Parallelism Opportunities
-
-Mark task groups that can execute in parallel (tasks with no dependency between them):
+Marcá-la como exigindo TDD e estruturar os passos de TDD:
 
 ```
-# Example parallel groups:
-Parallel Group A: T-001 (domain entity), T-002 (migration)
-Parallel Group B: T-003 (use case), T-004 (repository impl) — after T-001 and T-002
+Passos TDD:
+1. Escrever testes em [caminho do arquivo de teste] cobrindo:
+   - [Cenário de teste 1: happy path]
+   - [Cenário de teste 2: caso de erro]
+   - [Cenário de teste N: caso extremo]
+2. Confirmar que os testes falham.
+3. Implementar [código específico].
+4. Confirmar que os testes passam.
+5. Executar a suite completa de testes e o build.
 ```
 
-Add a note to each independent task: `Can parallelize: Yes`.
+Os caminhos dos arquivos de teste devem seguir as convenções de teste do projeto em `TESTING.md`.
 
-### Step 7 — Write `tasks.md`
+### Passo 5 — Identificar Dependências
 
-Using `references/task-template.md` as the base, write each task with:
-- Complete description of what must be done.
-- TDD steps (for coding tasks).
-- Acceptance criteria traceable to requirements from `spec.md`.
-- Dependencies listed explicitly.
+Para cada tarefa, determinar quais outras tarefas devem estar completas antes que ela possa iniciar:
 
-Write to: `.specs/features/[feature-name]/tasks.md`
+- Uma tarefa de caso de uso depende da tarefa de entidade de domínio.
+- Uma tarefa de controller HTTP depende da tarefa de caso de uso.
+- Uma tarefa de implementação de repositório depende da tarefa de interface de domínio.
+- Uma tarefa de migração que é necessária para um caso de uso funcionar cria uma dependência.
+- Tarefas que são independentes têm `depends_on: []`.
 
-### Step 8 — Write `graph.yaml`
+### Passo 6 — Identificar Oportunidades de Paralelismo
 
-Generate a YAML dependency graph:
+Marcar grupos de tarefas que podem ser executados em paralelo (tarefas sem dependência entre si):
+
+```
+# Exemplo de grupos paralelos:
+Grupo Paralelo A: T-001 (entidade de domínio), T-002 (migração)
+Grupo Paralelo B: T-003 (caso de uso), T-004 (impl. repositório) — após T-001 e T-002
+```
+
+Adicionar uma nota a cada tarefa independente: `Pode paralelizar: Sim`.
+
+### Passo 7 — Escrever `tasks.md`
+
+Usando `references/task-template.md` como base, escrever cada tarefa com:
+- Descrição completa do que deve ser feito.
+- Passos de TDD (para tarefas de codificação).
+- Critérios de aceitação rastreáveis aos requisitos de `spec.md`.
+- Dependências listadas explicitamente.
+
+Escrever em: `.specs/features/[feature-name]/tasks.md`
+
+### Passo 8 — Escrever `graph.yaml`
+
+Gerar um grafo de dependências YAML:
 
 ```yaml
 tasks:
   T-001:
-    title: "[title]"
+    title: "[título]"
     depends_on: []
     can_parallelize: true
 
   T-002:
-    title: "[title]"
+    title: "[título]"
     depends_on: []
     can_parallelize: true
 
   T-003:
-    title: "[title]"
+    title: "[título]"
     depends_on:
       - T-001
       - T-002
     can_parallelize: false
 ```
 
-Write to: `.specs/features/[feature-name]/graph.yaml`
+Escrever em: `.specs/features/[feature-name]/graph.yaml`
 
-### Step 9 — Validate Task Set
+### Passo 9 — Validar Conjunto de Tarefas
 
-Before writing the files, verify:
+Antes de escrever os arquivos, verificar:
 
-- [ ] Every acceptance criterion from `spec.md` is covered by at least one task.
-- [ ] No task leaves the application in a broken/non-compilable state.
-- [ ] All TDD tasks have concrete test file paths and test scenarios.
-- [ ] Dependencies form a valid DAG (no circular dependencies).
-- [ ] Tasks are small enough to be reviewed in a single session (max ~8h estimate per task).
-- [ ] Every task is traceable to at least one requirement ID from `spec.md`.
+- [ ] Cada critério de aceitação de `spec.md` é coberto por ao menos uma tarefa.
+- [ ] Nenhuma tarefa deixa a aplicação em estado quebrado/não compilável.
+- [ ] Todas as tarefas TDD têm caminhos de arquivos de teste concretos e cenários de teste.
+- [ ] As dependências formam um DAG válido (sem dependências circulares).
+- [ ] As tarefas são pequenas o suficiente para serem revisadas em uma única sessão (máx. ~8h de estimativa por tarefa).
+- [ ] Cada tarefa é rastreável a ao menos um ID de requisito de `spec.md`.
 
-### Step 10 — Update `STATE.md`
+### Passo 10 — Atualizar `STATE.md`
 
-Call `scripts/update-state.md` with:
+Chamar `scripts/update-state.md` com:
 ```
 Status: TASKS_GENERATED
 Feature: [feature-name]
-Updated At: [current timestamp]
+Updated At: [timestamp atual]
 ```
 
 ---
 
-## Outputs
+## Saídas
 
 - `.specs/features/[feature-name]/tasks.md`
 - `.specs/features/[feature-name]/graph.yaml`
-- `.specs/STATE.md` updated to `TASKS_GENERATED`
+- `.specs/STATE.md` atualizado para `TASKS_GENERATED`
 
 ---
 
-## Completion Message
+## Mensagem de Conclusão
 
 ```
 Tarefas geradas para "[feature-name]".
@@ -203,8 +203,8 @@ Próximos passos:
 
 ---
 
-## Error Handling
+## Tratamento de Erros
 
-- If `spec.md` or `design.md` are incomplete, do not proceed — inform the user of the missing information and ask them to complete the documents first.
-- If a task would leave the application in a broken state, split it into a smaller task that maintains compilability.
-- If circular dependencies are detected in the graph, resolve them by splitting or reordering tasks and flag the issue to the user.
+- Se `spec.md` ou `design.md` estiverem incompletos, não prosseguir — informar o usuário das informações ausentes e pedir que complete os documentos primeiro.
+- Se uma tarefa deixar a aplicação em estado quebrado, dividi-la em uma tarefa menor que mantenha a compilabilidade.
+- Se dependências circulares forem detectadas no grafo, resolvê-las dividindo ou reordenando as tarefas e sinalizar o problema ao usuário.

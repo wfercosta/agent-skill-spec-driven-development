@@ -1,35 +1,35 @@
 # Script: generate-sdd
 
-> Generate a Software Design Document (SDD) through iterative refinement with the user.
+> Gerar um Documento de Design de Software (SDD) por meio de refinamento iterativo com o usuário.
 
 ---
 
-## Objective
+## Objetivo
 
-Produce a complete and unambiguous specification for a feature by asking targeted questions to remove ambiguity, then generating `spec.md`, `context.md` (if needed), and `design.md` for the feature. Update STATE.md to reflect `DESIGN_DEFINED`.
-
----
-
-## Inputs
-
-- Feature description from the user's command (e.g., `"create SDD for payment retry"`) OR
-- A requirements file provided by the user (e.g., `"generate SDD from requirements.md"`).
-- Existing `.specs/codebase/` documents (ARCHITECTURE.md, STACK.md, CONVENTIONS.md).
+Produzir uma especificação completa e sem ambiguidades para uma feature fazendo perguntas direcionadas para eliminar ambiguidades, e então gerar `spec.md`, `context.md` (se necessário) e `design.md` para a feature. Atualizar STATE.md para refletir `DESIGN_DEFINED`.
 
 ---
 
-## Pre-conditions
+## Entradas
 
-1. `.specs/codebase/` must exist. If not, instruct the user to run project initialization first:
+- Descrição da feature a partir do comando do usuário (ex.: `"create SDD for payment retry"`) OU
+- Um arquivo de requisitos fornecido pelo usuário (ex.: `"generate SDD from requirements.md"`).
+- Documentos existentes em `.specs/codebase/` (ARCHITECTURE.md, STACK.md, CONVENTIONS.md).
+
+---
+
+## Pré-condições
+
+1. `.specs/codebase/` deve existir. Se não, instruir o usuário a executar a inicialização do projeto primeiro:
    ```
    O projeto ainda não foi inicializado.
    Execute: "init project" para começar.
    ```
-2. Read `.specs/STATE.md` to understand current state.
-3. Derive the `feature-name` slug from the user's description (kebab-case, lowercase, max 4 words).
-   - Example: `"payment retry logic"` → `payment-retry`
-4. Check if `.specs/features/[feature-name]/` already exists.
-   - If yes, ask:
+2. Ler `.specs/STATE.md` para entender o estado atual.
+3. Derivar o slug `feature-name` a partir da descrição do usuário (kebab-case, minúsculo, máx. 4 palavras).
+   - Exemplo: `"payment retry logic"` → `payment-retry`
+4. Verificar se `.specs/features/[feature-name]/` já existe.
+   - Se sim, perguntar:
      ```
      Já existe uma SDD para "[feature-name]".
      Deseja atualizá-la ou criar uma nova versão?
@@ -37,38 +37,38 @@ Produce a complete and unambiguous specification for a feature by asking targete
 
 ---
 
-## Steps
+## Passos
 
-### Step 1 — Extract Initial Description
+### Passo 1 — Extrair Descrição Inicial
 
-If a requirements file was referenced, read it. Otherwise, extract the feature description from the user's command.
+Se um arquivo de requisitos foi referenciado, lê-lo. Caso contrário, extrair a descrição da feature do comando do usuário.
 
-Summarize your understanding back to the user:
+Resumir o entendimento de volta ao usuário:
 ```
-Entendi que você deseja especificar: [feature description].
+Entendi que você deseja especificar: [descrição da feature].
 
 Vou fazer algumas perguntas para detalhar a especificação e remover ambiguidades.
 ```
 
-### Step 2 — Clarifying Questions
+### Passo 2 — Perguntas de Esclarecimento
 
-Ask the following questions. Adapt or skip questions that are clearly already answered by the user's input or existing documentation. Group questions logically.
+Fazer as seguintes perguntas. Adaptar ou pular perguntas que já estejam claramente respondidas pelo input do usuário ou pela documentação existente. Agrupar perguntas logicamente.
 
-**Problem and Context:**
+**Problema e Contexto:**
 ```
 1. Qual problema específico essa funcionalidade resolve?
 2. Quem são os usuários ou sistemas que utilizarão essa funcionalidade?
 3. Existe alguma funcionalidade similar já implementada que devemos considerar ou reutilizar?
 ```
 
-**Functional Requirements:**
+**Requisitos Funcionais:**
 ```
 4. Quais são os comportamentos esperados do sistema (o que ele deve fazer)?
 5. Quais são os casos de uso principais? Descreva o fluxo do ponto de vista do usuário.
 6. Existem casos de uso alternativos ou fluxos de exceção importantes?
 ```
 
-**Non-Functional Requirements:**
+**Requisitos Não Funcionais:**
 ```
 7. Existem requisitos de performance? (ex.: tempo de resposta, throughput)
 8. Existem requisitos de segurança? (ex.: autenticação, autorização, criptografia)
@@ -76,13 +76,13 @@ Ask the following questions. Adapt or skip questions that are clearly already an
 10. A funcionalidade precisa ser escalável horizontalmente?
 ```
 
-**Acceptance Criteria:**
+**Critérios de Aceitação:**
 ```
 11. Como saberemos que a funcionalidade está correta e completa?
     Liste os critérios de aceitação mais importantes.
 ```
 
-**Dependencies and Constraints:**
+**Dependências e Restrições:**
 ```
 12. Quais partes do sistema existente essa funcionalidade depende?
 13. Existem integrações externas envolvidas?
@@ -90,90 +90,90 @@ Ask the following questions. Adapt or skip questions that are clearly already an
 15. Existem restrições de prazo ou de escopo?
 ```
 
-**Risks and Open Questions:**
+**Riscos e Questões em Aberto:**
 ```
 16. Quais são os principais riscos ou incertezas que você identifica nessa funcionalidade?
 17. Existe alguma decisão de design que está em aberto e precisa ser tomada?
 ```
 
-### Step 3 — Iterative Refinement
+### Passo 3 — Refinamento Iterativo
 
-After receiving the answers:
-1. Identify any remaining ambiguities or conflicting information.
-2. Ask follow-up questions for unresolved items only — do not re-ask what was already answered.
-3. Repeat until the agent has enough information to write a complete, unambiguous spec.
+Após receber as respostas:
+1. Identificar quaisquer ambiguidades restantes ou informações conflitantes.
+2. Fazer perguntas de acompanhamento apenas para itens não resolvidos — não reperguntar o que já foi respondido.
+3. Repetir até que o agente tenha informação suficiente para escrever uma spec completa e sem ambiguidades.
 
-Before writing the documents, confirm:
+Antes de escrever os documentos, confirmar:
 ```
 Tenho as informações necessárias para gerar a SDD.
 
 Resumo do que entendi:
-- Funcionalidade: [summary]
-- Requisitos principais: [list]
-- Critérios de aceitação: [list]
-- Dependências: [list]
+- Funcionalidade: [resumo]
+- Requisitos principais: [lista]
+- Critérios de aceitação: [lista]
+- Dependências: [lista]
 
 Posso prosseguir com a geração dos documentos?
 ```
 
-### Step 4 — Create Feature Directory
+### Passo 4 — Criar Diretório da Feature
 
-Create the directory: `.specs/features/[feature-name]/`
+Criar o diretório: `.specs/features/[feature-name]/`
 
-### Step 5 — Generate `spec.md`
+### Passo 5 — Gerar `spec.md`
 
-Using `references/sdd-template.md` as the base, populate all sections:
-- Assign a feature ID: `FEAT-[NNN]` (increment from existing features).
-- Assign traceable requirement IDs: `FEAT-[NNN]-REQ-001`, `FEAT-[NNN]-REQ-002`, etc.
-- Fill Functional Requirements from Step 2 answers.
-- Fill Non-Functional Requirements from Step 2 answers.
-- Fill Acceptance Criteria from Step 2 answers.
-- Fill Dependencies and Constraints.
-- Fill Traceability Matrix.
-- Document any open questions that remain.
+Usando `references/sdd-template.md` como base, preencher todas as seções:
+- Atribuir um ID de feature: `FEAT-[NNN]` (incrementar das features existentes).
+- Atribuir IDs de requisito rastreáveis: `FEAT-[NNN]-REQ-001`, `FEAT-[NNN]-REQ-002`, etc.
+- Preencher Requisitos Funcionais das respostas do Passo 2.
+- Preencher Requisitos Não Funcionais das respostas do Passo 2.
+- Preencher Critérios de Aceitação das respostas do Passo 2.
+- Preencher Dependências e Restrições.
+- Preencher Matriz de Rastreabilidade.
+- Documentar quaisquer questões em aberto que permaneçam.
 
-Write to: `.specs/features/[feature-name]/spec.md`
+Escrever em: `.specs/features/[feature-name]/spec.md`
 
-### Step 6 — Generate `context.md` (if needed)
+### Passo 6 — Gerar `context.md` (se necessário)
 
-Create this file ONLY if there are gray-area decisions, trade-offs, or assumptions that were made during the specification process that are not obvious from the spec itself.
+Criar este arquivo APENAS se houver decisões em área cinza, trade-offs ou suposições feitas durante o processo de especificação que não sejam óbvias a partir da spec em si.
 
-Content should include:
-- Key decisions made and their rationale.
-- Alternatives considered and why they were rejected.
-- Assumptions made due to missing information.
+O conteúdo deve incluir:
+- Decisões principais tomadas e sua justificativa.
+- Alternativas consideradas e por que foram rejeitadas.
+- Suposições feitas por falta de informação.
 
-Write to: `.specs/features/[feature-name]/context.md`
+Escrever em: `.specs/features/[feature-name]/context.md`
 
-### Step 7 — Generate `design.md`
+### Passo 7 — Gerar `design.md`
 
-Execute `scripts/generate-design.md` with the generated spec.md as input.
+Executar `scripts/generate-design.md` com o spec.md gerado como entrada.
 
-### Step 8 — Update `STATE.md`
+### Passo 8 — Atualizar `STATE.md`
 
-Call `scripts/update-state.md` with:
+Chamar `scripts/update-state.md` com:
 ```
 Status: DESIGN_DEFINED
 Feature: [feature-name]
-Updated At: [current timestamp]
+Updated At: [timestamp atual]
 ```
 
 ---
 
-## Outputs
+## Saídas
 
 ```
 .specs/features/[feature-name]/
 ├── spec.md
-├── context.md    (only if needed)
+├── context.md    (somente se necessário)
 └── design.md
 ```
 
-`.specs/STATE.md` updated to `DESIGN_DEFINED`.
+`.specs/STATE.md` atualizado para `DESIGN_DEFINED`.
 
 ---
 
-## Completion Message
+## Mensagem de Conclusão
 
 ```
 SDD gerada com sucesso para "[feature-name]".
@@ -192,8 +192,8 @@ Próximos passos:
 
 ---
 
-## Error Handling
+## Tratamento de Erros
 
-- If the user cannot answer critical questions, document the gap as an open question in spec.md and flag it in the completion message.
-- Never proceed to write spec.md with critical ambiguities unresolved — always ask.
-- If a requirements file is referenced but cannot be read, inform the user and ask them to provide the requirements directly.
+- Se o usuário não conseguir responder a perguntas críticas, documentar a lacuna como questão em aberto em spec.md e sinalizá-la na mensagem de conclusão.
+- Nunca prosseguir para escrever spec.md com ambiguidades críticas não resolvidas — sempre perguntar.
+- Se um arquivo de requisitos for referenciado mas não puder ser lido, informar o usuário e pedir que forneça os requisitos diretamente.

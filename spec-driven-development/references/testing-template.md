@@ -1,77 +1,77 @@
-# Testing: [PROJECT NAME]
+# Testes: [NOME DO PROJETO]
 
-> Test strategy, frameworks, patterns, and coverage expectations.
-
----
-
-## Strategy Overview
-
-| Level | Scope | Tools | Goal |
-|-------|-------|-------|------|
-| Unit | Single function/class, no I/O | [e.g., Vitest] | Business logic correctness |
-| Integration | Module + real dependencies | [e.g., Vitest + Testcontainers] | Adapter and DB correctness |
-| E2E | Full system via public interface | [e.g., Supertest / Playwright] | User-facing behavior |
+> Estratégia de testes, frameworks, padrões e expectativas de cobertura.
 
 ---
 
-## Test Frameworks & Libraries
+## Visão Geral da Estratégia
 
-| Library | Version | Purpose |
-|---------|---------|---------|
-| [e.g., Vitest] | [v] | Test runner and assertions |
-| [e.g., @vitest/coverage-v8] | [v] | Coverage reporting |
-| [e.g., Supertest] | [v] | HTTP integration testing |
-| [e.g., testcontainers] | [v] | Real DB/services in tests |
-| [e.g., @faker-js/faker] | [v] | Test data generation |
+| Nível | Escopo | Ferramentas | Objetivo |
+|-------|--------|-------------|----------|
+| Unitário | Função/classe única, sem I/O | [ex.: Vitest] | Correção da lógica de negócio |
+| Integração | Módulo + dependências reais | [ex.: Vitest + Testcontainers] | Correção de adapters e DB |
+| E2E | Sistema completo via interface pública | [ex.: Supertest / Playwright] | Comportamento do ponto de vista do usuário |
 
 ---
 
-## Running Tests
+## Frameworks & Bibliotecas de Teste
+
+| Biblioteca | Versão | Propósito |
+|------------|--------|-----------|
+| [ex.: Vitest] | [v] | Runner de testes e asserções |
+| [ex.: @vitest/coverage-v8] | [v] | Relatório de cobertura |
+| [ex.: Supertest] | [v] | Testes de integração HTTP |
+| [ex.: testcontainers] | [v] | DB/serviços reais nos testes |
+| [ex.: @faker-js/faker] | [v] | Geração de dados de teste |
+
+---
+
+## Executando Testes
 
 ```bash
-# All tests
-[test command]
+# Todos os testes
+[comando de teste]
 
-# Watch mode
-[watch command]
+# Modo watch
+[comando de watch]
 
-# Coverage
-[coverage command]
+# Cobertura
+[comando de cobertura]
 
-# Specific file
-[runner] [path/to/file.test.ts]
+# Arquivo específico
+[runner] [caminho/para/arquivo.test.ts]
 
-# Specific pattern
+# Padrão específico
 [runner] --grep "UserService"
 ```
 
 ---
 
-## File Organization
+## Organização de Arquivos
 
 ```
-# Option A: Co-located (next to source)
+# Opção A: Co-located (ao lado do fonte)
 src/
 └── users/
     ├── user.service.ts
     └── user.service.test.ts
 
-# Option B: Parallel directory
+# Opção B: Diretório paralelo
 test/
 └── unit/
     └── users/
         └── user.service.test.ts
 ```
 
-> This project uses: **[Option A / Option B]**
+> Este projeto usa: **[Opção A / Opção B]**
 
 ---
 
-## Test Structure
+## Estrutura dos Testes
 
 ```typescript
-describe('[ClassName or function name]', () => {
-  // Shared setup
+describe('[NomeClasse ou nome da função]', () => {
+  // Setup compartilhado
   let sut: UserService;
   let mockRepository: MockUserRepository;
 
@@ -80,8 +80,8 @@ describe('[ClassName or function name]', () => {
     sut = new UserService(mockRepository);
   });
 
-  describe('[method name]', () => {
-    it('should [expected behavior] when [condition]', async () => {
+  describe('[nome do método]', () => {
+    it('should [comportamento esperado] when [condição]', async () => {
       // Arrange
       const input = { ... };
 
@@ -92,7 +92,7 @@ describe('[ClassName or function name]', () => {
       expect(result).toEqual({ ... });
     });
 
-    it('should throw [ErrorType] when [invalid condition]', async () => {
+    it('should throw [TipoDeErro] when [condição inválida]', async () => {
       // Arrange
       const invalid = { ... };
 
@@ -107,13 +107,13 @@ describe('[ClassName or function name]', () => {
 
 ## Mocking
 
-- Prefer manual mocks over auto-mocking for clarity.
-- Mock only at system boundaries (repositories, external APIs, queues).
-- Do not mock domain logic — test it directly.
-- Reset all mocks in `beforeEach` or `afterEach`.
+- Preferir mocks manuais ao invés de auto-mocking pela clareza.
+- Mockar apenas nas fronteiras do sistema (repositórios, APIs externas, filas).
+- Não mockar lógica de domínio — testá-la diretamente.
+- Resetar todos os mocks em `beforeEach` ou `afterEach`.
 
 ```typescript
-// Example manual mock
+// Exemplo de mock manual
 class MockUserRepository implements UserRepository {
   users: User[] = [];
 
@@ -125,38 +125,38 @@ class MockUserRepository implements UserRepository {
 
 ---
 
-## Coverage Requirements
+## Requisitos de Cobertura
 
-| Metric | Minimum |
-|--------|---------|
-| Statements | [e.g., 80%] |
-| Branches | [e.g., 75%] |
-| Functions | [e.g., 80%] |
-| Lines | [e.g., 80%] |
-
----
-
-## TDD Workflow (Mandatory for coding tasks)
-
-1. Write failing test(s) that describe the expected behavior.
-2. Run tests — confirm they fail for the right reason.
-3. Write the minimum code to make the tests pass.
-4. Run tests — confirm they pass.
-5. Refactor if needed — tests must still pass.
-6. Run the full test suite before committing.
+| Métrica | Mínimo |
+|---------|--------|
+| Statements | [ex.: 80%] |
+| Branches | [ex.: 75%] |
+| Functions | [ex.: 80%] |
+| Lines | [ex.: 80%] |
 
 ---
 
-## Test Data
+## Fluxo de TDD (Obrigatório para tarefas de codificação)
 
-- Use factory functions or builders to create test data.
-- Never use hardcoded IDs that could conflict between tests.
-- For integration tests, use isolated database schemas or transactions that roll back.
+1. Escrever teste(s) falhando que descrevam o comportamento esperado.
+2. Executar testes — confirmar que falham pelo motivo correto.
+3. Escrever o código mínimo para fazer os testes passarem.
+4. Executar testes — confirmar que passam.
+5. Refatorar se necessário — os testes devem continuar passando.
+6. Executar a suite completa de testes antes de fazer commit.
 
 ---
 
-## Notes
+## Dados de Teste
 
-<!-- Project-specific testing decisions, known flaky tests, or areas with low coverage -->
+- Usar funções factory ou builders para criar dados de teste.
+- Nunca usar IDs hardcoded que possam conflitar entre testes.
+- Para testes de integração, usar schemas de banco de dados isolados ou transações que fazem rollback.
+
+---
+
+## Notas
+
+<!-- Decisões de teste específicas do projeto, testes instáveis conhecidos ou áreas com baixa cobertura -->
 
 -

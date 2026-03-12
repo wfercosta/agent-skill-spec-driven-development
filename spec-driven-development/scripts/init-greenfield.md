@@ -1,41 +1,41 @@
 # Script: init-greenfield
 
-> Initialize a new project by generating foundational `.specs/codebase/` documentation as a blueprint for development.
+> Inicializar um novo projeto gerando a documentação base de `.specs/codebase/` como blueprint para o desenvolvimento.
 
 ---
 
-## Objective
+## Objetivo
 
-Guide the user through defining the project's stack, architecture, conventions, and structure before any code is written. Produce all documents under `.specs/codebase/` based on the user's answers and sound engineering defaults. At the end, STATE.md must reflect `CODEBASE_ANALYZED`.
-
----
-
-## Inputs
-
-- User's project description and goals.
-- Answers to clarifying questions (gathered during this script).
+Guiar o usuário na definição do stack, arquitetura, convenções e estrutura do projeto antes de qualquer código ser escrito. Produzir todos os documentos em `.specs/codebase/` com base nas respostas do usuário e boas práticas de engenharia. Ao final, STATE.md deve refletir `CODEBASE_ANALYZED`.
 
 ---
 
-## Pre-conditions
+## Entradas
 
-1. Check whether `.specs/` already exists.
-   - If it does, warn the user:
+- Descrição e objetivos do projeto fornecidos pelo usuário.
+- Respostas às perguntas de esclarecimento (coletadas durante este script).
+
+---
+
+## Pré-condições
+
+1. Verificar se `.specs/` já existe.
+   - Se existir, avisar o usuário:
      ```
      Um diretório .specs/ já existe.
      Deseja recriar os documentos de codebase para um projeto greenfield?
      Isso substituirá o conteúdo atual de .specs/codebase/.
      ```
-   - Wait for confirmation before proceeding.
-2. If `.specs/` does not exist, create the full directory structure silently.
+   - Aguardar confirmação antes de prosseguir.
+2. Se `.specs/` não existir, criar a estrutura completa de diretórios silenciosamente.
 
 ---
 
-## Steps
+## Passos
 
-### Step 1 — Directory Setup
+### Passo 1 — Configuração de Diretórios
 
-Create the following directories if they do not exist:
+Criar os seguintes diretórios se não existirem:
 
 ```
 .specs/
@@ -44,9 +44,9 @@ Create the following directories if they do not exist:
 .specs/quick/
 ```
 
-### Step 2 — Gather Project Information
+### Passo 2 — Coletar Informações do Projeto
 
-Ask the user the following questions. Wait for complete answers before proceeding. You may ask all at once or in a conversational flow.
+Fazer as seguintes perguntas ao usuário. Aguardar respostas completas antes de prosseguir. Pode fazer todas de uma vez ou em fluxo conversacional.
 
 ```
 Vou fazer algumas perguntas para criar o blueprint do seu projeto.
@@ -76,105 +76,105 @@ Vou fazer algumas perguntas para criar o blueprint do seu projeto.
    (Ex.: Conventional Commits, ESLint Airbnb, testes obrigatórios)
 ```
 
-### Step 3 — Generate `STACK.md`
+### Passo 3 — Gerar `STACK.md`
 
-Based on the user's answers, produce a STACK.md using `references/stack-template.md` with:
-- Recommended language, runtime, and package manager.
-- Suggested frameworks with justification.
-- Testing libraries appropriate for the chosen stack.
-- Build scripts suitable for the project type.
-- Infrastructure components based on stated needs.
-- Required environment variables (initial set).
+Com base nas respostas do usuário, produzir um STACK.md usando `references/stack-template.md` com:
+- Linguagem, runtime e gerenciador de pacotes recomendados.
+- Frameworks sugeridos com justificativa.
+- Bibliotecas de teste adequadas ao stack escolhido.
+- Scripts de build adequados ao tipo de projeto.
+- Componentes de infraestrutura com base nas necessidades declaradas.
+- Variáveis de ambiente necessárias (conjunto inicial).
 
-Write to: `.specs/codebase/STACK.md`
+Escrever em: `.specs/codebase/STACK.md`
 
-### Step 4 — Generate `ARCHITECTURE.md`
+### Passo 4 — Gerar `ARCHITECTURE.md`
 
-Using `references/architecture-template.md`, define:
-- Recommended architectural style with rationale (e.g., Hexagonal for API with multiple integrations, simple Layered for a basic CRUD service).
-- Initial layer/module organization.
-- Expected data flow through the system.
-- Key components and their responsibilities (initial set, to be expanded as features are defined).
-- Cross-cutting concerns strategy.
+Usando `references/architecture-template.md`, definir:
+- Estilo arquitetural recomendado com justificativa (ex.: Hexagonal para API com múltiplas integrações, Layered simples para um serviço CRUD básico).
+- Organização inicial de camadas/módulos.
+- Fluxo de dados esperado pelo sistema.
+- Componentes principais e suas responsabilidades (conjunto inicial, a ser expandido conforme as features são definidas).
+- Estratégia de preocupações transversais.
 
-Write to: `.specs/codebase/ARCHITECTURE.md`
+Escrever em: `.specs/codebase/ARCHITECTURE.md`
 
-### Step 5 — Generate `CONVENTIONS.md`
+### Passo 5 — Gerar `CONVENTIONS.md`
 
-Using `references/conventions-template.md`, define:
-- File and directory naming conventions.
-- Code naming conventions.
-- Import order.
-- Error handling strategy.
-- Commit message convention.
-- Code style configuration.
-- Patterns explicitly prohibited for this project.
+Usando `references/conventions-template.md`, definir:
+- Convenções de nomenclatura de arquivos e diretórios.
+- Convenções de nomenclatura de código.
+- Ordem de imports.
+- Estratégia de tratamento de erros.
+- Convenção de mensagens de commit.
+- Configuração de estilo de código.
+- Padrões explicitamente proibidos neste projeto.
 
-Write to: `.specs/codebase/CONVENTIONS.md`
+Escrever em: `.specs/codebase/CONVENTIONS.md`
 
-### Step 6 — Generate `STRUCTURE.md`
+### Passo 6 — Gerar `STRUCTURE.md`
 
-Using `references/structure-template.md`, define:
-- Proposed root directory layout.
-- Module/package breakdown with descriptions.
-- Test directory organization.
-- Key files to be created (entry points, config, etc.).
-- Module boundary rules.
+Usando `references/structure-template.md`, definir:
+- Layout de diretório raiz proposto.
+- Detalhamento de módulos/pacotes com descrições.
+- Organização do diretório de testes.
+- Arquivos principais a serem criados (pontos de entrada, config, etc.).
+- Regras de fronteira entre módulos.
 
-Write to: `.specs/codebase/STRUCTURE.md`
+Escrever em: `.specs/codebase/STRUCTURE.md`
 
-### Step 7 — Generate `TESTING.md`
+### Passo 7 — Gerar `TESTING.md`
 
-Using `references/testing-template.md`, define:
-- Test strategy (unit, integration, e2e — what's in scope).
-- Selected test frameworks and libraries.
-- Test commands.
-- Test file organization.
-- TDD workflow to be followed (mandatory for all coding tasks).
-- Coverage targets.
+Usando `references/testing-template.md`, definir:
+- Estratégia de testes (unitário, integração, e2e — o que está no escopo).
+- Frameworks e bibliotecas de teste selecionados.
+- Comandos de teste.
+- Organização dos arquivos de teste.
+- Fluxo de TDD a ser seguido (obrigatório para todas as tarefas de codificação).
+- Metas de cobertura.
 
-Write to: `.specs/codebase/TESTING.md`
+Escrever em: `.specs/codebase/TESTING.md`
 
-### Step 8 — Generate `INTEGRATIONS.md`
+### Passo 8 — Gerar `INTEGRATIONS.md`
 
-Using `references/integrations-template.md`, document:
-- All external integrations identified in Step 2.
-- Adapter pattern to be applied for each.
-- Local development substitutes (Docker services, mocks, sandbox accounts).
+Usando `references/integrations-template.md`, documentar:
+- Todas as integrações externas identificadas no Passo 2.
+- Padrão de adapter a ser aplicado para cada uma.
+- Substitutos para desenvolvimento local (serviços Docker, mocks, contas sandbox).
 
-If no integrations were mentioned, create a minimal document noting that all future integrations must follow the adapter pattern.
+Se nenhuma integração foi mencionada, criar um documento mínimo indicando que todas as integrações futuras devem seguir o padrão de adapter.
 
-Write to: `.specs/codebase/INTEGRATIONS.md`
+Escrever em: `.specs/codebase/INTEGRATIONS.md`
 
-### Step 9 — Generate `CONCERNS.md`
+### Passo 9 — Gerar `CONCERNS.md`
 
-Using `references/concerns-template.md`, document:
-- Known risks for this type of project (e.g., security concerns for auth systems, consistency challenges for distributed systems).
-- Areas to watch during implementation.
-- Any constraints mentioned by the user.
+Usando `references/concerns-template.md`, documentar:
+- Riscos conhecidos para este tipo de projeto (ex.: preocupações de segurança para sistemas de auth, desafios de consistência para sistemas distribuídos).
+- Áreas a observar durante a implementação.
+- Quaisquer restrições mencionadas pelo usuário.
 
-Write to: `.specs/codebase/CONCERNS.md`
+Escrever em: `.specs/codebase/CONCERNS.md`
 
-### Step 10 — Initialize `STATE.md`
+### Passo 10 — Inicializar `STATE.md`
 
-Using `references/state-template.md`, create:
+Usando `references/state-template.md`, criar:
 
 ```
 Status: CODEBASE_ANALYZED
 Feature: -
 Current Task: -
-Updated At: [current timestamp]
+Updated At: [timestamp atual]
 
 Decisions:
-- [YYYY-MM-DD] Stack selected: [language + framework] — [brief rationale]
-- [YYYY-MM-DD] Architecture: [style] — [brief rationale]
+- [YYYY-MM-DD] Stack selecionado: [linguagem + framework] — [justificativa breve]
+- [YYYY-MM-DD] Arquitetura: [estilo] — [justificativa breve]
 ```
 
-Write to: `.specs/STATE.md`
+Escrever em: `.specs/STATE.md`
 
 ---
 
-## Outputs
+## Saídas
 
 ```
 .specs/
@@ -191,9 +191,9 @@ Write to: `.specs/STATE.md`
 
 ---
 
-## Completion Message
+## Mensagem de Conclusão
 
-After all files are written, inform the user:
+Após todos os arquivos serem escritos, informar ao usuário:
 
 ```
 Blueprint do projeto gerado com sucesso.
@@ -216,8 +216,8 @@ Próximos passos:
 
 ---
 
-## Error Handling
+## Tratamento de Erros
 
-- If the user cannot answer a question, proceed with a sensible default and document the assumption in the relevant file.
-- If conflicting choices are made (e.g., a framework incompatible with the chosen language), flag the conflict and ask for clarification before generating documents.
-- Always document assumptions and open decisions explicitly in the generated files.
+- Se o usuário não conseguir responder a uma pergunta, prosseguir com um padrão razoável e documentar a suposição no arquivo relevante.
+- Se escolhas conflitantes forem feitas (ex.: um framework incompatível com a linguagem escolhida), sinalizar o conflito e pedir esclarecimento antes de gerar os documentos.
+- Sempre documentar suposições e decisões em aberto explicitamente nos arquivos gerados.

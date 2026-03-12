@@ -1,90 +1,90 @@
-# Integrations: [PROJECT NAME]
+# Integrações: [NOME DO PROJETO]
 
-> External services, APIs, message brokers, and third-party dependencies.
-
----
-
-## Integration Map
-
-| Integration | Type | Direction | Criticality |
-|-------------|------|-----------|-------------|
-| [e.g., Stripe] | Payment gateway | Outbound | Critical |
-| [e.g., SendGrid] | Email delivery | Outbound | High |
-| [e.g., RabbitMQ] | Message broker | Bidirectional | Critical |
-| [e.g., Redis] | Cache / session | Outbound | High |
-| [e.g., S3] | File storage | Outbound | Medium |
+> Serviços externos, APIs, message brokers e dependências de terceiros.
 
 ---
 
-## Integration Details
+## Mapa de Integrações
 
-### [Integration Name]
+| Integração | Tipo | Direção | Criticidade |
+|------------|------|---------|-------------|
+| [ex.: Stripe] | Gateway de pagamento | Saída | Crítica |
+| [ex.: SendGrid] | Entrega de email | Saída | Alta |
+| [ex.: RabbitMQ] | Message broker | Bidirecional | Crítica |
+| [ex.: Redis] | Cache / sessão | Saída | Alta |
+| [ex.: S3] | Armazenamento de arquivos | Saída | Média |
 
-- **Provider**: [Provider name and version/API]
-- **Purpose**: [What this integration does for the application]
-- **Authentication**: [e.g., API Key in header, OAuth2, mTLS]
-- **Rate Limits**: [e.g., 100 req/s, 10,000 req/day]
-- **SLA / Timeout**: [e.g., 5s timeout, 99.9% uptime SLA]
-- **Retry Policy**: [e.g., 3 retries with exponential backoff]
-- **Circuit Breaker**: [Yes/No — tool used if yes]
-- **Docs**: [Link to provider documentation]
-- **Environment Variables**:
+---
+
+## Detalhes das Integrações
+
+### [Nome da Integração]
+
+- **Provedor**: [Nome do provedor e versão/API]
+- **Propósito**: [O que esta integração faz para a aplicação]
+- **Autenticação**: [ex.: API Key no header, OAuth2, mTLS]
+- **Limites de Taxa**: [ex.: 100 req/s, 10.000 req/dia]
+- **SLA / Timeout**: [ex.: timeout de 5s, SLA de 99,9% de uptime]
+- **Política de Retentativa**: [ex.: 3 tentativas com backoff exponencial]
+- **Circuit Breaker**: [Sim/Não — ferramenta usada se sim]
+- **Docs**: [Link para documentação do provedor]
+- **Variáveis de Ambiente**:
   ```
-  [VAR_NAME]=...
+  [NOME_VAR]=...
   ```
 
 ---
 
-## Adapter Pattern
+## Padrão de Adapter
 
-All integrations must be wrapped in an adapter that implements a domain interface. This ensures the domain layer remains free of external dependencies.
+Todas as integrações devem ser encapsuladas em um adapter que implementa uma interface de domínio. Isso garante que a camada de domínio permaneça livre de dependências externas.
 
 ```
-Domain Interface (Port)
-       ↑
-  Adapter (implements Port)
-       ↓
-  External SDK / HTTP Client
+Interface de Domínio (Port)
+         ↑
+  Adapter (implementa Port)
+         ↓
+  SDK Externo / Cliente HTTP
 ```
 
 ```typescript
-// Domain port
+// Port de domínio
 interface EmailSender {
   send(params: SendEmailParams): Promise<void>;
 }
 
-// Infrastructure adapter
+// Adapter de infraestrutura
 class SendGridEmailSender implements EmailSender {
   async send(params: SendEmailParams): Promise<void> {
-    // SendGrid SDK calls here
+    // Chamadas ao SDK do SendGrid aqui
   }
 }
 ```
 
 ---
 
-## Local Development
+## Desenvolvimento Local
 
-| Integration | Local Substitute | How to Start |
-|-------------|-----------------|--------------|
-| [e.g., RabbitMQ] | Docker container | `docker compose up rabbitmq` |
-| [e.g., Stripe] | Stripe CLI mock | `stripe listen --forward-to localhost:3000/webhooks` |
-| [e.g., S3] | LocalStack / MinIO | `docker compose up localstack` |
-
----
-
-## Failure Handling
-
-| Integration | Failure Impact | Fallback Strategy |
-|-------------|---------------|-------------------|
-| [e.g., Email] | Non-blocking | Queue for retry |
-| [e.g., Payment] | Blocking | Return error to user |
-| [e.g., Cache] | Degraded performance | Fall through to database |
+| Integração | Substituto Local | Como Iniciar |
+|------------|-----------------|--------------|
+| [ex.: RabbitMQ] | Container Docker | `docker compose up rabbitmq` |
+| [ex.: Stripe] | Mock Stripe CLI | `stripe listen --forward-to localhost:3000/webhooks` |
+| [ex.: S3] | LocalStack / MinIO | `docker compose up localstack` |
 
 ---
 
-## Notes
+## Tratamento de Falhas
 
-<!-- Known limitations, version-specific behaviors, or pending migrations -->
+| Integração | Impacto da Falha | Estratégia de Fallback |
+|------------|-----------------|------------------------|
+| [ex.: Email] | Não bloqueante | Enfileirar para retentativa |
+| [ex.: Pagamento] | Bloqueante | Retornar erro ao usuário |
+| [ex.: Cache] | Performance degradada | Passar direto para o banco de dados |
+
+---
+
+## Notas
+
+<!-- Limitações conhecidas, comportamentos específicos de versão ou migrações pendentes -->
 
 -

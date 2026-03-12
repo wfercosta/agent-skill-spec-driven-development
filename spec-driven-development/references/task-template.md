@@ -1,128 +1,128 @@
-# Tasks: [FEATURE NAME]
+# Tarefas: [NOME DA FEATURE]
 
-> Atomic implementation tasks derived from the SDD.
+> Tarefas atômicas de implementação derivadas da SDD.
 
 **Feature ID**: [FEAT-XXX]
-**Generated At**: [YYYY-MM-DD]
-**Status**: [X of Y tasks completed]
+**Gerado Em**: [YYYY-MM-DD]
+**Status**: [X de Y tarefas concluídas]
 
 ---
 
-## Summary
+## Resumo
 
-| ID | Title | Status | Priority | Estimate | Depends On |
-|----|-------|--------|----------|----------|------------|
-| T-001 | [title] | Pending | High | [Xh] | - |
-| T-002 | [title] | Pending | High | [Xh] | - |
-| T-003 | [title] | Pending | Medium | [Xh] | T-001, T-002 |
-
----
-
-## Tasks
+| ID | Título | Status | Prioridade | Estimativa | Depende De |
+|----|--------|--------|------------|------------|------------|
+| T-001 | [título] | Pendente | Alta | [Xh] | - |
+| T-002 | [título] | Pendente | Alta | [Xh] | - |
+| T-003 | [título] | Pendente | Média | [Xh] | T-001, T-002 |
 
 ---
 
-### [ ] T-001: [Task Title]
-
-- **Category**: [Infrastructure / Backend / Frontend / Testing / DevOps]
-- **Priority**: [High / Medium / Low]
-- **Estimate**: [Xh]
-- **Dependencies**: None
-- **Requires**: [TDD / Documentation / Migration / None]
-- **Traceable To**: [FEAT-XXX-REQ-001, AC-001]
-
-**Description**:
-
-[Detailed description of what must be done. Be specific about files, modules, and behaviors.]
-
-**TDD Steps** *(for coding tasks)*:
-
-1. Write tests in `[test file path]` covering:
-   - [ ] [Test scenario 1]
-   - [ ] [Test scenario 2]
-2. Confirm tests fail.
-3. Implement `[specific code / module / function]`.
-4. Confirm tests pass.
-5. Run full test suite and build.
-
-**Acceptance Criteria**:
-
-- [ ] [Criterion 1 — observable, verifiable behavior]
-- [ ] [Criterion 2]
-- [ ] Build passes with no errors
-- [ ] All tests pass
-
-**Notes**:
-
-[Any caveats, constraints, or edge cases to be aware of during implementation.]
+## Tarefas
 
 ---
 
-### [ ] T-002: [Task Title]
+### [ ] T-001: [Título da Tarefa]
 
-- **Category**: [Infrastructure / Backend / Frontend / Testing / DevOps]
-- **Priority**: [High / Medium / Low]
-- **Estimate**: [Xh]
-- **Dependencies**: None
-- **Requires**: [TDD / Documentation / Migration / None]
-- **Traceable To**: [FEAT-XXX-REQ-001, AC-002]
+- **Categoria**: [Infraestrutura / Backend / Frontend / Testes / DevOps]
+- **Prioridade**: [Alta / Média / Baixa]
+- **Estimativa**: [Xh]
+- **Dependências**: Nenhuma
+- **Requer**: [TDD / Documentação / Migração / Nenhum]
+- **Rastreável A**: [FEAT-XXX-REQ-001, AC-001]
 
-**Description**:
+**Descrição**:
 
-[Detailed description.]
+[Descrição detalhada do que deve ser feito. Seja específico sobre arquivos, módulos e comportamentos.]
 
-**TDD Steps** *(for coding tasks)*:
+**Passos TDD** *(para tarefas de codificação)*:
 
-1. Write tests in `[test file path]` covering:
-   - [ ] [Test scenario 1]
-2. Confirm tests fail.
-3. Implement `[specific code]`.
-4. Confirm tests pass.
-5. Run full test suite and build.
+1. Escrever testes em `[caminho do arquivo de teste]` cobrindo:
+   - [ ] [Cenário de teste 1]
+   - [ ] [Cenário de teste 2]
+2. Confirmar que os testes falham.
+3. Implementar `[código específico / módulo / função]`.
+4. Confirmar que os testes passam.
+5. Executar a suite completa de testes e o build.
 
-**Acceptance Criteria**:
+**Critérios de Aceitação**:
 
-- [ ] [Criterion 1]
-- [ ] Build passes with no errors
-- [ ] All tests pass
+- [ ] [Critério 1 — comportamento observável e verificável]
+- [ ] [Critério 2]
+- [ ] Build passa sem erros
+- [ ] Todos os testes passam
 
----
+**Notas**:
 
-### [ ] T-003: [Task Title]
-
-- **Category**: [category]
-- **Priority**: [priority]
-- **Estimate**: [Xh]
-- **Dependencies**: T-001, T-002
-- **Requires**: TDD
-- **Traceable To**: [FEAT-XXX-REQ-002]
-
-**Description**:
-
-[Detailed description.]
-
-**TDD Steps**:
-
-1. Write tests in `[test file path]` covering:
-   - [ ] [Test scenario 1]
-2. Confirm tests fail.
-3. Implement.
-4. Confirm tests pass.
-5. Run full test suite and build.
-
-**Acceptance Criteria**:
-
-- [ ] [Criterion 1]
-- [ ] Build passes with no errors
-- [ ] All tests pass
+[Quaisquer ressalvas, restrições ou casos extremos a ter em mente durante a implementação.]
 
 ---
 
-## Completion Checklist
+### [ ] T-002: [Título da Tarefa]
 
-- [ ] All tasks completed
-- [ ] All acceptance criteria met
-- [ ] Full test suite passes
-- [ ] Build succeeds
-- [ ] Documentation updated
-- [ ] All commits applied and pushed
+- **Categoria**: [Infraestrutura / Backend / Frontend / Testes / DevOps]
+- **Prioridade**: [Alta / Média / Baixa]
+- **Estimativa**: [Xh]
+- **Dependências**: Nenhuma
+- **Requer**: [TDD / Documentação / Migração / Nenhum]
+- **Rastreável A**: [FEAT-XXX-REQ-001, AC-002]
+
+**Descrição**:
+
+[Descrição detalhada.]
+
+**Passos TDD** *(para tarefas de codificação)*:
+
+1. Escrever testes em `[caminho do arquivo de teste]` cobrindo:
+   - [ ] [Cenário de teste 1]
+2. Confirmar que os testes falham.
+3. Implementar `[código específico]`.
+4. Confirmar que os testes passam.
+5. Executar a suite completa de testes e o build.
+
+**Critérios de Aceitação**:
+
+- [ ] [Critério 1]
+- [ ] Build passa sem erros
+- [ ] Todos os testes passam
+
+---
+
+### [ ] T-003: [Título da Tarefa]
+
+- **Categoria**: [categoria]
+- **Prioridade**: [prioridade]
+- **Estimativa**: [Xh]
+- **Dependências**: T-001, T-002
+- **Requer**: TDD
+- **Rastreável A**: [FEAT-XXX-REQ-002]
+
+**Descrição**:
+
+[Descrição detalhada.]
+
+**Passos TDD**:
+
+1. Escrever testes em `[caminho do arquivo de teste]` cobrindo:
+   - [ ] [Cenário de teste 1]
+2. Confirmar que os testes falham.
+3. Implementar.
+4. Confirmar que os testes passam.
+5. Executar a suite completa de testes e o build.
+
+**Critérios de Aceitação**:
+
+- [ ] [Critério 1]
+- [ ] Build passa sem erros
+- [ ] Todos os testes passam
+
+---
+
+## Checklist de Conclusão
+
+- [ ] Todas as tarefas concluídas
+- [ ] Todos os critérios de aceitação atendidos
+- [ ] Suite completa de testes passa
+- [ ] Build com sucesso
+- [ ] Documentação atualizada
+- [ ] Todos os commits aplicados e enviados

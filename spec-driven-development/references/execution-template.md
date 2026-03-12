@@ -1,17 +1,17 @@
-# Execution Plan: [FEATURE NAME]
+# Plano de Execução: [NOME DA FEATURE]
 
-> Batched execution plan derived from the dependency graph.
+> Plano de execução em batches derivado do grafo de dependências.
 
 **Feature ID**: [FEAT-XXX]
-**Generated At**: [YYYY-MM-DD]
-**Status**: Pending Approval | Approved | In Progress | Completed
+**Gerado Em**: [YYYY-MM-DD]
+**Status**: Aguardando Aprovação | Aprovado | Em Andamento | Concluído
 
 ---
 
-## Dependency Graph Summary
+## Resumo do Grafo de Dependências
 
 ```yaml
-# graph.yaml summary
+# resumo do graph.yaml
 tasks:
   T-001:
     depends_on: []
@@ -25,54 +25,54 @@ tasks:
 
 ---
 
-## Execution Batches
+## Batches de Execução
 
-### Batch 1 — Parallel *(can be executed simultaneously)*
+### Batch 1 — Paralelo *(podem ser executadas simultaneamente)*
 
-| Task | Title | Estimate | Can Parallelize |
-|------|-------|----------|-----------------|
-| T-001 | [title] | [Xh] | Yes — independent |
-| T-002 | [title] | [Xh] | Yes — independent |
+| Tarefa | Título | Estimativa | Pode Paralelizar |
+|--------|--------|------------|-----------------|
+| T-001 | [título] | [Xh] | Sim — independente |
+| T-002 | [título] | [Xh] | Sim — independente |
 
-**Orchestration note**: T-001 and T-002 have no dependencies. If sub-agents are available, execute in parallel.
-
----
-
-### Batch 2 — Sequential *(requires Batch 1 completion)*
-
-| Task | Title | Estimate | Depends On |
-|------|-------|----------|------------|
-| T-003 | [title] | [Xh] | T-001, T-002 |
+**Nota de orquestração**: T-001 e T-002 não têm dependências. Se sub-agentes estiverem disponíveis, executar em paralelo.
 
 ---
 
-## Estimates
+### Batch 2 — Sequencial *(requer conclusão do Batch 1)*
 
-| Metric | Value |
-|--------|-------|
-| Total tasks | [N] |
-| Total estimated effort | [Xh] |
-| Sequential minimum (critical path) | [Xh] |
-| Parallel minimum (all parallelism exploited) | [Xh] |
+| Tarefa | Título | Estimativa | Depende De |
+|--------|--------|------------|------------|
+| T-003 | [título] | [Xh] | T-001, T-002 |
 
 ---
 
-## Execution Progress
+## Estimativas
 
-| Task | Status | Started At | Completed At | Commit |
-|------|--------|-----------|-------------|--------|
-| T-001 | Pending | - | - | - |
-| T-002 | Pending | - | - | - |
-| T-003 | Pending | - | - | - |
-
-**Status values**: `Pending` | `In Progress` | `Review Pending` | `Completed` | `Failed` | `Blocked`
+| Métrica | Valor |
+|---------|-------|
+| Total de tarefas | [N] |
+| Esforço total estimado | [Xh] |
+| Mínimo sequencial (caminho crítico) | [Xh] |
+| Mínimo com paralelismo (todo paralelismo explorado) | [Xh] |
 
 ---
 
-## Approval Gate
+## Progresso da Execução
+
+| Tarefa | Status | Iniciado Em | Concluído Em | Commit |
+|--------|--------|------------|-------------|--------|
+| T-001 | Pendente | - | - | - |
+| T-002 | Pendente | - | - | - |
+| T-003 | Pendente | - | - | - |
+
+**Valores de status**: `Pendente` | `Em Andamento` | `Revisão Pendente` | `Concluído` | `Falhou` | `Bloqueado`
+
+---
+
+## Gate de Aprovação
 
 ```
-Este é o plano de execução para [FEATURE NAME].
+Este é o plano de execução para [NOME DA FEATURE].
 
 Batches:
   Batch 1 (paralelo): T-001, T-002
@@ -86,16 +86,16 @@ Você aprova iniciar a implementação?
 
 ---
 
-## Retry Log
+## Log de Retentativas
 
-| Task | Attempt | Failed At | Reason | Next Attempt |
-|------|---------|-----------|--------|-------------|
+| Tarefa | Tentativa | Falhou Em | Motivo | Próxima Tentativa |
+|--------|-----------|----------|--------|------------------|
 | - | - | - | - | - |
 
 ---
 
-## Notes
+## Notas
 
-<!-- Implementation notes, risks, or dependencies discovered during planning -->
+<!-- Notas de implementação, riscos ou dependências descobertas durante o planejamento -->
 
 -

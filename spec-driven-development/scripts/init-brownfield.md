@@ -1,41 +1,41 @@
 # Script: init-brownfield
 
-> Analyze an existing codebase and generate the `.specs/codebase/` documentation set.
+> Analisar uma base de código existente e gerar o conjunto de documentação `.specs/codebase/`.
 
 ---
 
-## Objective
+## Objetivo
 
-Produce a complete and accurate snapshot of the existing system by reading the codebase, then populating all documents under `.specs/codebase/` using the corresponding reference templates. At the end, the STATE.md must reflect `CODEBASE_ANALYZED`.
-
----
-
-## Inputs
-
-- Existing source code in the current working directory.
-- Optionally: a `README.md`, `package.json`, `docker-compose.yml`, or any configuration files at the root.
+Produzir um snapshot completo e preciso do sistema existente lendo a base de código, e então preencher todos os documentos em `.specs/codebase/` usando os templates de referência correspondentes. Ao final, o STATE.md deve refletir `CODEBASE_ANALYZED`.
 
 ---
 
-## Pre-conditions
+## Entradas
 
-1. Check whether `.specs/` already exists.
-   - If it does, warn the user:
+- Código-fonte existente no diretório de trabalho atual.
+- Opcionalmente: um `README.md`, `package.json`, `docker-compose.yml`, ou quaisquer arquivos de configuração na raiz.
+
+---
+
+## Pré-condições
+
+1. Verificar se `.specs/` já existe.
+   - Se existir, avisar o usuário:
      ```
      Um diretório .specs/ já existe neste projeto.
      Deseja sobrescrever os documentos existentes em .specs/codebase/?
      (Isso não afetará .specs/features/ ou .specs/quick/)
      ```
-   - Wait for explicit confirmation before proceeding.
-2. If `.specs/` does not exist, create the full directory structure silently.
+   - Aguardar confirmação explícita antes de prosseguir.
+2. Se `.specs/` não existir, criar a estrutura completa de diretórios silenciosamente.
 
 ---
 
-## Steps
+## Passos
 
-### Step 1 — Directory Setup
+### Passo 1 — Configuração de Diretórios
 
-Create the following directories if they do not exist:
+Criar os seguintes diretórios se não existirem:
 
 ```
 .specs/
@@ -44,116 +44,116 @@ Create the following directories if they do not exist:
 .specs/quick/
 ```
 
-### Step 2 — Codebase Exploration
+### Passo 2 — Exploração da Base de Código
 
-Systematically read the codebase to gather information for each document. Recommended reading order:
+Ler a base de código sistematicamente para coletar informações para cada documento. Ordem de leitura recomendada:
 
-1. Root config files: `package.json`, `tsconfig.json`, `pom.xml`, `go.mod`, `Cargo.toml`, `Gemfile`, etc.
+1. Arquivos de config na raiz: `package.json`, `tsconfig.json`, `pom.xml`, `go.mod`, `Cargo.toml`, `Gemfile`, etc.
 2. `docker-compose.yml`, `Dockerfile`, `.env.example`, `Makefile`.
-3. `README.md` or any top-level documentation.
-4. Directory structure (top 3 levels).
-5. Sample source files from each major module/package (2–3 files per module).
-6. Test files to understand testing patterns.
-7. CI/CD configuration: `.github/workflows/`, `Jenkinsfile`, `.gitlab-ci.yml`.
+3. `README.md` ou qualquer documentação de nível superior.
+4. Estrutura de diretórios (primeiros 3 níveis).
+5. Arquivos-fonte de amostra de cada módulo/pacote principal (2–3 arquivos por módulo).
+6. Arquivos de teste para entender os padrões de teste.
+7. Configuração de CI/CD: `.github/workflows/`, `Jenkinsfile`, `.gitlab-ci.yml`.
 
-### Step 3 — Generate `STACK.md`
+### Passo 3 — Gerar `STACK.md`
 
-Using `references/stack-template.md` as the base, fill in:
-- Language, runtime, and package manager with detected versions.
-- Core frameworks and libraries from dependency files.
-- Testing libraries.
-- Build scripts extracted from the project configuration.
-- Infrastructure components identified from Docker/compose files.
-- Environment variables from `.env.example` or documentation.
+Usando `references/stack-template.md` como base, preencher:
+- Linguagem, runtime e gerenciador de pacotes com versões detectadas.
+- Frameworks e bibliotecas principais dos arquivos de dependência.
+- Bibliotecas de teste.
+- Scripts de build extraídos da configuração do projeto.
+- Componentes de infraestrutura identificados nos arquivos Docker/compose.
+- Variáveis de ambiente de `.env.example` ou documentação.
 
-Write to: `.specs/codebase/STACK.md`
+Escrever em: `.specs/codebase/STACK.md`
 
-### Step 4 — Generate `ARCHITECTURE.md`
+### Passo 4 — Gerar `ARCHITECTURE.md`
 
-Using `references/architecture-template.md` as the base, document:
-- The architectural style (e.g., layered, hexagonal, MVC, microservices).
-- How the source code is organized into layers or modules.
-- The main data flow through the application.
-- Key components and their responsibilities.
-- Dependency direction rules observed.
-- Cross-cutting concerns (logging, error handling, auth).
+Usando `references/architecture-template.md` como base, documentar:
+- O estilo arquitetural (ex.: layered, hexagonal, MVC, microsserviços).
+- Como o código-fonte é organizado em camadas ou módulos.
+- O fluxo principal de dados pela aplicação.
+- Componentes principais e suas responsabilidades.
+- Regras de direção de dependência observadas.
+- Preocupações transversais (logging, tratamento de erros, auth).
 
-Write to: `.specs/codebase/ARCHITECTURE.md`
+Escrever em: `.specs/codebase/ARCHITECTURE.md`
 
-### Step 5 — Generate `CONVENTIONS.md`
+### Passo 5 — Gerar `CONVENTIONS.md`
 
-Using `references/conventions-template.md` as the base, document:
-- File and directory naming patterns observed.
-- Class, function, variable, and constant naming conventions.
-- Import organization patterns.
-- Error handling approach.
-- Commit message convention (check git log if accessible).
-- Code style settings from linter/formatter config files.
-- Patterns to avoid based on any existing linting rules.
+Usando `references/conventions-template.md` como base, documentar:
+- Padrões de nomenclatura de arquivos e diretórios observados.
+- Convenções de nomenclatura de classes, funções, variáveis e constantes.
+- Padrões de organização de imports.
+- Abordagem de tratamento de erros.
+- Convenção de mensagens de commit (verificar git log se acessível).
+- Configurações de estilo de código dos arquivos de linter/formatter.
+- Padrões a evitar com base em regras de linting existentes.
 
-Write to: `.specs/codebase/CONVENTIONS.md`
+Escrever em: `.specs/codebase/CONVENTIONS.md`
 
-### Step 6 — Generate `STRUCTURE.md`
+### Passo 6 — Gerar `STRUCTURE.md`
 
-Using `references/structure-template.md` as the base, document:
-- Root directory layout.
-- `src/` (or equivalent) module breakdown with descriptions.
-- `test/` or test directory organization.
-- Key files and their purposes.
-- Module boundary rules observed.
+Usando `references/structure-template.md` como base, documentar:
+- Layout do diretório raiz.
+- Detalhamento de módulos de `src/` (ou equivalente) com descrições.
+- Organização do diretório `test/` ou de testes.
+- Arquivos principais e seus propósitos.
+- Regras de fronteira entre módulos observadas.
 
-Write to: `.specs/codebase/STRUCTURE.md`
+Escrever em: `.specs/codebase/STRUCTURE.md`
 
-### Step 7 — Generate `TESTING.md`
+### Passo 7 — Gerar `TESTING.md`
 
-Using `references/testing-template.md` as the base, document:
-- Test frameworks and libraries in use.
-- How to run tests (commands from package scripts or Makefile).
-- Test file organization (co-located vs. parallel directory).
-- Mock and stub patterns observed.
-- Coverage configuration if found.
-- Any existing TDD or BDD conventions.
+Usando `references/testing-template.md` como base, documentar:
+- Frameworks e bibliotecas de teste em uso.
+- Como executar testes (comandos dos scripts do package ou Makefile).
+- Organização dos arquivos de teste (co-located vs. diretório paralelo).
+- Padrões de mock e stub observados.
+- Configuração de cobertura se encontrada.
+- Quaisquer convenções de TDD ou BDD existentes.
 
-Write to: `.specs/codebase/TESTING.md`
+Escrever em: `.specs/codebase/TESTING.md`
 
-### Step 8 — Generate `INTEGRATIONS.md`
+### Passo 8 — Gerar `INTEGRATIONS.md`
 
-Using `references/integrations-template.md` as the base, document:
-- External services identified (databases, message brokers, payment gateways, email providers, cloud storage, etc.).
-- Authentication methods used for each integration.
-- Adapter or wrapper patterns observed.
-- Local development substitutes (Docker services, mocks).
+Usando `references/integrations-template.md` como base, documentar:
+- Serviços externos identificados (bancos de dados, message brokers, gateways de pagamento, provedores de email, armazenamento em nuvem, etc.).
+- Métodos de autenticação usados para cada integração.
+- Padrões de adapter ou wrapper observados.
+- Substitutos para desenvolvimento local (serviços Docker, mocks).
 
-Write to: `.specs/codebase/INTEGRATIONS.md`
+Escrever em: `.specs/codebase/INTEGRATIONS.md`
 
-### Step 9 — Generate `CONCERNS.md`
+### Passo 9 — Gerar `CONCERNS.md`
 
-Using `references/concerns-template.md` as the base, document observed issues:
-- Missing or low test coverage areas.
-- Complex code without documentation.
-- Deprecated dependencies.
-- Known TODO/FIXME comments in the code.
-- Potential security vulnerabilities (hardcoded credentials, missing validation).
-- Performance bottlenecks (N+1 patterns, missing indexes, large payloads).
+Usando `references/concerns-template.md` como base, documentar problemas observados:
+- Áreas com cobertura de teste ausente ou baixa.
+- Código complexo sem documentação.
+- Dependências depreciadas.
+- Comentários TODO/FIXME conhecidos no código.
+- Potenciais vulnerabilidades de segurança (credenciais hardcoded, validação ausente).
+- Gargalos de performance (padrões N+1, índices ausentes, payloads grandes).
 
-Write to: `.specs/codebase/CONCERNS.md`
+Escrever em: `.specs/codebase/CONCERNS.md`
 
-### Step 10 — Initialize `STATE.md`
+### Passo 10 — Inicializar `STATE.md`
 
-Using `references/state-template.md` as the base, create:
+Usando `references/state-template.md` como base, criar:
 
 ```
 Status: CODEBASE_ANALYZED
 Feature: -
 Current Task: -
-Updated At: [current timestamp]
+Updated At: [timestamp atual]
 ```
 
-Write to: `.specs/STATE.md`
+Escrever em: `.specs/STATE.md`
 
 ---
 
-## Outputs
+## Saídas
 
 ```
 .specs/
@@ -170,9 +170,9 @@ Write to: `.specs/STATE.md`
 
 ---
 
-## Completion Message
+## Mensagem de Conclusão
 
-After all files are written, inform the user:
+Após todos os arquivos serem escritos, informar ao usuário:
 
 ```
 Inicialização brownfield concluída.
@@ -195,8 +195,8 @@ Próximos passos:
 
 ---
 
-## Error Handling
+## Tratamento de Erros
 
-- If the codebase is too large to read completely, prioritize entry points, configuration files, and one representative file per module.
-- If a document cannot be fully populated due to missing information, fill what is possible and add a `<!-- TODO: verify -->` comment on uncertain sections.
-- Never fabricate information — if unsure, document the uncertainty explicitly.
+- Se a base de código for muito grande para ler completamente, priorizar pontos de entrada, arquivos de configuração e um arquivo representativo por módulo.
+- Se um documento não puder ser totalmente preenchido por falta de informação, preencher o que for possível e adicionar um comentário `<!-- TODO: verificar -->` nas seções incertas.
+- Nunca fabricar informações — se houver dúvida, documentar a incerteza explicitamente.

@@ -1,257 +1,257 @@
-# Skill: Spec-Driven Development
+# Skill: Desenvolvimento Orientado a Especificações
 
-## Overview
+## Visão Geral
 
-This skill transforms an AI agent into a structured software engineering assistant. It enforces a disciplined workflow where specifications always precede implementation, humans approve key gates, and all work is traceable through a persistent state machine.
+Esta skill transforma um agente de IA em um assistente de engenharia de software estruturado. Ela impõe um fluxo de trabalho disciplinado onde especificações sempre precedem a implementação, humanos aprovam etapas-chave, e todo o trabalho é rastreável por meio de uma máquina de estados persistente.
 
-## Principles
+## Princípios
 
-1. **Spec First** - No implementation occurs before a specification exists.
-2. **Human-in-the-Loop** - The developer must approve: the execution plan, each implementation, and each commit.
-3. **Small Cognitive Steps** - Work is divided into small, reviewable atomic tasks.
-4. **Deterministic Execution** - The agent follows an explicit, traceable plan.
-5. **Continuous Documentation** - Documentation evolves alongside the system.
+1. **Spec Primeiro** - Nenhuma implementação ocorre antes de uma especificação existir.
+2. **Humano no Processo** - O desenvolvedor deve aprovar: o plano de execução, cada implementação e cada commit.
+3. **Passos Cognitivos Pequenos** - O trabalho é dividido em tarefas atômicas pequenas e revisáveis.
+4. **Execução Determinística** - O agente segue um plano explícito e rastreável.
+5. **Documentação Contínua** - A documentação evolui junto com o sistema.
 
 ---
 
-## Trigger Patterns
+## Padrões de Acionamento
 
-The agent must recognize the following intents (exact wording may vary):
+O agente deve reconhecer as seguintes intenções (o enunciado exato pode variar):
 
-### Project Initialization
+### Inicialização de Projeto
 - `init project` / `initialize specs` / `setup project specs`
 - `inicializar projeto` / `configurar specs do projeto`
 
-**Action**: Ask the user whether to initialize from an existing codebase (brownfield) or a new project (greenfield). Then execute the appropriate script.
+**Ação**: Perguntar ao usuário se deseja inicializar a partir de uma base de código existente (brownfield) ou um novo projeto (greenfield). Em seguida, executar o script apropriado.
 
-### SDD Generation
+### Geração de SDD
 - `create SDD for [feature]` / `create specification for [feature]`
 - `generate SDD from [requirements file]`
-- `quero criar uma SDD [description]` / `quero criar um SDD com base no arquivo [file]`
+- `quero criar uma SDD [descrição]` / `quero criar um SDD com base no arquivo [arquivo]`
 - `criar especificação para [feature]`
 
-**Action**: Execute `scripts/generate-sdd.md`.
+**Ação**: Executar `scripts/generate-sdd.md`.
 
-### Task Generation
+### Geração de Tarefas
 - `generate tasks for feature [name]` / `generate tasks for SDD [name]`
-- `gerar tarefas para feature [name]` / `gerar tarefas para o SDD [name]`
+- `gerar tarefas para feature [nome]` / `gerar tarefas para o SDD [nome]`
 
-**Action**: Execute `scripts/generate-tasks.md`.
+**Ação**: Executar `scripts/generate-tasks.md`.
 
-### Execution Plan
+### Plano de Execução
 - `generate execution plan for [feature]` / `gerar plano de execução para [feature]`
 
-**Action**: Execute `scripts/generate-execution-plan.md`.
+**Ação**: Executar `scripts/generate-execution-plan.md`.
 
-### Task Execution
+### Execução de Tarefas
 - `execute task [T-XXX]` / `executar tarefa [T-XXX]` / `start implementation`
 - `iniciar implementação`
 
-**Action**: Execute `scripts/execute-task.md`.
+**Ação**: Executar `scripts/execute-task.md`.
 
 ---
 
-## Project Structure
+## Estrutura do Projeto
 
-The skill operates on this directory structure. It must not alter the structure itself.
+A skill opera sobre esta estrutura de diretórios. Ela não deve alterar a estrutura em si.
 
 ```
 .specs/
-├── STATE.md                    # State machine + decisions + blockers + learnings
+├── STATE.md                    # Máquina de estados + decisões + bloqueios + aprendizados
 │
-├── codebase/                   # Generated during initialization
-│   ├── STACK.md                # Technology stack and dependencies
-│   ├── ARCHITECTURE.md         # Patterns, data flow, code organization
-│   ├── CONVENTIONS.md          # Naming, style, coding patterns
-│   ├── STRUCTURE.md            # Directory layout and modules
-│   ├── TESTING.md              # Test frameworks and patterns
-│   ├── INTEGRATIONS.md         # External services and APIs
-│   └── CONCERNS.md             # Tech debt, risks, fragile areas
+├── codebase/                   # Gerado durante a inicialização
+│   ├── STACK.md                # Stack tecnológico e dependências
+│   ├── ARCHITECTURE.md         # Padrões, fluxo de dados, organização do código
+│   ├── CONVENTIONS.md          # Nomenclatura, estilo, padrões de código
+│   ├── STRUCTURE.md            # Layout de diretórios e módulos
+│   ├── TESTING.md              # Frameworks e padrões de teste
+│   ├── INTEGRATIONS.md         # Serviços externos e APIs
+│   └── CONCERNS.md             # Débito técnico, riscos, áreas frágeis
 │
-├── features/                   # One directory per feature
-│   └── [feature-name]/
-│       ├── spec.md             # Requirements with traceable IDs
-│       ├── context.md          # Decisions for gray areas (when needed)
-│       ├── design.md           # Architecture, components, Mermaid diagrams
-│       ├── tasks.md            # Atomic tasks with dependencies
-│       ├── execution.md        # Execution plan organized in batches
-│       └── graph.yaml          # Dependency graph for parallelism detection
+├── features/                   # Um diretório por feature
+│   └── [nome-da-feature]/
+│       ├── spec.md             # Requisitos com IDs rastreáveis
+│       ├── context.md          # Decisões para áreas cinzas (quando necessário)
+│       ├── design.md           # Arquitetura, componentes, diagramas Mermaid
+│       ├── tasks.md            # Tarefas atômicas com dependências
+│       ├── execution.md        # Plano de execução organizado em batches
+│       └── graph.yaml          # Grafo de dependências para detecção de paralelismo
 │
-└── quick/                      # Ad-hoc small tasks
+└── quick/                      # Tarefas ad-hoc pequenas
     └── NNN-slug/
-        ├── TASK.md             # Description + verification criteria
-        └── SUMMARY.md          # What was done + commit reference
+        ├── TASK.md             # Descrição + critérios de verificação
+        └── SUMMARY.md          # O que foi feito + referência do commit
 ```
 
 ---
 
-## State Machine
+## Máquina de Estados
 
-The current state is persisted in `.specs/STATE.md`. Valid transitions:
+O estado atual é persistido em `.specs/STATE.md`. Transições válidas:
 
 ```
 UNINITIALIZED
-    └─> CODEBASE_ANALYZED        (after init-brownfield or init-greenfield)
-            └─> FEATURE_SPECIFIED    (after generate-sdd)
-                    └─> DESIGN_DEFINED        (after generate-design)
-                            └─> TASKS_GENERATED      (after generate-tasks)
-                                    └─> EXECUTION_PLAN_READY (after generate-execution-plan)
-                                            └─> PLAN_APPROVAL_PENDING    (awaiting human)
+    └─> CODEBASE_ANALYZED        (após init-brownfield ou init-greenfield)
+            └─> FEATURE_SPECIFIED    (após generate-sdd)
+                    └─> DESIGN_DEFINED        (após generate-design)
+                            └─> TASKS_GENERATED      (após generate-tasks)
+                                    └─> EXECUTION_PLAN_READY (após generate-execution-plan)
+                                            └─> PLAN_APPROVAL_PENDING    (aguardando humano)
                                                     └─> TASK_IN_PROGRESS
-                                                            └─> IMPLEMENTATION_REVIEW_PENDING (awaiting human)
-                                                                    └─> COMMIT_APPROVAL_PENDING (awaiting human)
-                                                                            └─> TASK_IN_PROGRESS (next task)
+                                                            └─> IMPLEMENTATION_REVIEW_PENDING (aguardando humano)
+                                                                    └─> COMMIT_APPROVAL_PENDING (aguardando humano)
+                                                                            └─> TASK_IN_PROGRESS (próxima tarefa)
                                                                             └─> FEATURE_COMPLETED
 
-Any state can transition to BLOCKED if max retries are exceeded.
+Qualquer estado pode transitar para BLOCKED se o número máximo de tentativas for excedido.
 ```
 
 ---
 
-## Mandatory Human Gates
+## Gates Humanos Obrigatórios
 
-The agent must NEVER proceed past these gates without explicit human approval.
+O agente NUNCA deve avançar além desses gates sem aprovação humana explícita.
 
-### Gate 1 — Plan Approval
+### Gate 1 — Aprovação do Plano
 
-Before implementing any task, present the full execution plan and ask:
+Antes de implementar qualquer tarefa, apresentar o plano de execução completo e perguntar:
 
 ```
 Aqui está o plano de execução para [feature]:
 
-[execution plan summary]
+[resumo do plano de execução]
 
 Você aprova iniciar a implementação?
 ```
 
-### Gate 2 — Implementation Review
+### Gate 2 — Revisão da Implementação
 
-After completing each task, present the changes and ask:
+Após concluir cada tarefa, apresentar as mudanças e perguntar:
 
 ```
 A tarefa [T-XXX] foi implementada.
 
 Arquivos alterados:
-[list of files]
+[lista de arquivos]
 
 Revise as mudanças antes de aprovar o commit.
 Você aprova o commit?
 ```
 
-### Gate 3 — Commit Approval
+### Gate 3 — Aprovação do Commit
 
-Present the generated commit message and ask:
+Apresentar a mensagem de commit gerada e perguntar:
 
 ```
 Mensagem de commit proposta:
-[commit message following conventional commits]
+[mensagem de commit seguindo conventional commits]
 
 Confirma o commit?
 ```
 
 ---
 
-## Parallelism
+## Paralelismo
 
-The base agent role is **Executor**. When the dependency graph (`graph.yaml`) reveals independent tasks within the same batch:
+O papel base do agente é **Executor**. Quando o grafo de dependências (`graph.yaml`) revelar tarefas independentes dentro do mesmo batch:
 
-1. The agent assumes the **Orchestrator** role.
-2. Sub-agents are spawned as **Executor** instances.
-3. Each sub-agent receives one independent task.
-4. The Orchestrator consolidates results before proceeding to the next batch.
+1. O agente assume o papel de **Orquestrador**.
+2. Sub-agentes são instanciados como **Executor**.
+3. Cada sub-agente recebe uma tarefa independente.
+4. O Orquestrador consolida os resultados antes de avançar para o próximo batch.
 
 ```
 Executor
   |
-  ├─ Detect independent tasks in current batch
+  ├─ Detecta tarefas independentes no batch atual
   |       |
-  |   Become Orchestrator
+  |   Torna-se Orquestrador
   |       |
-  |   Spawn Subagents (one per independent task)
+  |   Instancia Sub-agentes (um por tarefa independente)
   |       |
-  |   Merge Results
+  |   Consolida Resultados
   |       |
-  └─ Resume as Executor for next batch
+  └─ Retorna como Executor para o próximo batch
 ```
 
 ---
 
-## Retry Policy
+## Política de Retentativa
 
-If a task fails during execution:
+Se uma tarefa falhar durante a execução:
 
 ```yaml
 retry_policy:
   max_attempts: 3
-  backoff: exponential   # 1st: immediate, 2nd: 30s, 3rd: 120s
+  backoff: exponencial   # 1ª: imediata, 2ª: 30s, 3ª: 120s
 ```
 
-After 3 failures, update `STATE.md`:
+Após 3 falhas, atualizar `STATE.md`:
 
 ```
 Status: BLOCKED
 BLOCKED_TASK: T-XXX
-BLOCKED_REASON: [description of failure]
+BLOCKED_REASON: [descrição da falha]
 ```
 
 ---
 
-## TDD Requirement
+## Requisito de TDD
 
-All coding tasks must follow Test-Driven Development:
+Todas as tarefas de codificação devem seguir o Desenvolvimento Orientado a Testes:
 
-1. Write or update tests (unit, component, integration) — tests must FAIL.
-2. Implement the minimum code to make tests pass.
-3. Run build — must succeed with no compilation errors.
-4. Run all tests — must pass.
+1. Escrever ou atualizar testes (unitários, componente, integração) — os testes devem FALHAR.
+2. Implementar o código mínimo para fazer os testes passarem.
+3. Executar o build — deve ter sucesso sem erros de compilação.
+4. Executar todos os testes — devem passar.
 
-The agent must never write implementation code before the corresponding tests exist and fail.
-
----
-
-## Execution Loop
-
-For each task the agent executes:
-
-```
-PLAN    → Read task, understand scope
-EXECUTE → Write tests, implement, validate
-VERIFY  → Run build and tests
-REFLECT → Check acceptance criteria
-REPLAN  → Update state, identify blockers or next step
-```
+O agente nunca deve escrever código de implementação antes que os testes correspondentes existam e falhem.
 
 ---
 
-## Quick Mode
+## Loop de Execução
 
-For small, ad-hoc tasks that don't warrant a full SDD cycle:
+Para cada tarefa que o agente executa:
 
-- Create `.specs/quick/NNN-slug/TASK.md` with description and verification criteria.
-- After completion, create `.specs/quick/NNN-slug/SUMMARY.md` with what was done and the commit reference.
+```
+PLANEJAR  → Ler tarefa, entender escopo
+EXECUTAR  → Escrever testes, implementar, validar
+VERIFICAR → Executar build e testes
+REFLETIR  → Verificar critérios de aceitação
+REPLANEJAR → Atualizar estado, identificar bloqueios ou próximo passo
+```
+
+---
+
+## Modo Rápido
+
+Para tarefas ad-hoc pequenas que não justificam um ciclo completo de SDD:
+
+- Criar `.specs/quick/NNN-slug/TASK.md` com descrição e critérios de verificação.
+- Após a conclusão, criar `.specs/quick/NNN-slug/SUMMARY.md` com o que foi feito e a referência do commit.
 
 ---
 
 ## Scripts
 
-| Script | Purpose |
-|--------|---------|
-| `scripts/init-brownfield.md` | Analyze existing codebase and generate `.specs/codebase/` |
-| `scripts/init-greenfield.md` | Initialize new project and generate `.specs/codebase/` |
-| `scripts/generate-sdd.md` | Generate SDD through iterative refinement with user |
-| `scripts/generate-design.md` | Generate design document with Mermaid diagrams |
-| `scripts/generate-tasks.md` | Generate atomic tasks from SDD with dependency graph |
-| `scripts/generate-execution-plan.md` | Build batched execution plan and request approval |
-| `scripts/execute-task.md` | Execute a single task using TDD with human gates |
-| `scripts/update-state.md` | Update `.specs/STATE.md` |
-| `scripts/retry-task.md` | Retry a failed task with backoff |
+| Script | Propósito |
+|--------|-----------|
+| `scripts/init-brownfield.md` | Analisar base de código existente e gerar `.specs/codebase/` |
+| `scripts/init-greenfield.md` | Inicializar novo projeto e gerar `.specs/codebase/` |
+| `scripts/generate-sdd.md` | Gerar SDD por refinamento iterativo com o usuário |
+| `scripts/generate-design.md` | Gerar documento de design com diagramas Mermaid |
+| `scripts/generate-tasks.md` | Gerar tarefas atômicas do SDD com grafo de dependências |
+| `scripts/generate-execution-plan.md` | Construir plano de execução em batches e solicitar aprovação |
+| `scripts/execute-task.md` | Executar uma única tarefa usando TDD com gates humanos |
+| `scripts/update-state.md` | Atualizar `.specs/STATE.md` |
+| `scripts/retry-task.md` | Retentar uma tarefa falha com backoff |
 
 ---
 
-## References (Templates)
+## Referências (Templates)
 
-| Template | Used For |
-|----------|----------|
+| Template | Usado Para |
+|----------|------------|
 | `references/state-template.md` | `.specs/STATE.md` |
 | `references/stack-template.md` | `.specs/codebase/STACK.md` |
 | `references/architecture-template.md` | `.specs/codebase/ARCHITECTURE.md` |
@@ -260,24 +260,24 @@ For small, ad-hoc tasks that don't warrant a full SDD cycle:
 | `references/testing-template.md` | `.specs/codebase/TESTING.md` |
 | `references/integrations-template.md` | `.specs/codebase/INTEGRATIONS.md` |
 | `references/concerns-template.md` | `.specs/codebase/CONCERNS.md` |
-| `references/sdd-template.md` | `.specs/features/[name]/spec.md` |
-| `references/design-template.md` | `.specs/features/[name]/design.md` |
-| `references/task-template.md` | `.specs/features/[name]/tasks.md` |
-| `references/execution-template.md` | `.specs/features/[name]/execution.md` |
+| `references/sdd-template.md` | `.specs/features/[nome]/spec.md` |
+| `references/design-template.md` | `.specs/features/[nome]/design.md` |
+| `references/task-template.md` | `.specs/features/[nome]/tasks.md` |
+| `references/execution-template.md` | `.specs/features/[nome]/execution.md` |
 
 ---
 
-## Governance Rules
+## Regras de Governança
 
-The agent MUST:
-- Keep `spec.md`, `design.md`, and `tasks.md` consistent with each other.
-- Maintain requirement traceability: every task must reference at least one requirement ID from `spec.md`.
-- Update `STATE.md` after every significant state change.
-- Never skip a human gate under any circumstance.
+O agente DEVE:
+- Manter `spec.md`, `design.md` e `tasks.md` consistentes entre si.
+- Manter rastreabilidade de requisitos: toda tarefa deve referenciar ao menos um ID de requisito de `spec.md`.
+- Atualizar `STATE.md` após cada mudança de estado significativa.
+- Nunca pular um gate humano sob qualquer circunstância.
 
-The agent MUST NEVER:
-- Implement without an approved spec.
-- Begin implementation without plan approval.
-- Commit without human approval.
-- Advance tasks automatically without human confirmation.
-- Break the build or leave the application non-compilable at the end of any task.
+O agente NUNCA DEVE:
+- Implementar sem uma spec aprovada.
+- Iniciar implementação sem aprovação do plano.
+- Fazer commit sem aprovação humana.
+- Avançar tarefas automaticamente sem confirmação humana.
+- Quebrar o build ou deixar a aplicação não compilável ao final de qualquer tarefa.

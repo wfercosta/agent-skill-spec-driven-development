@@ -1,111 +1,111 @@
 # Script: retry-task
 
-> Retry a failed task with exponential backoff. Mark the task as BLOCKED after exceeding max attempts.
+> Retentar uma tarefa falhada com backoff exponencial. Marcar a tarefa como BLOCKED após exceder o número máximo de tentativas.
 
 ---
 
-## Objective
+## Objetivo
 
-Handle task failures gracefully by retrying up to 3 times with exponential backoff. If all attempts are exhausted, update STATE.md to `BLOCKED` and notify the user with a detailed failure report.
+Lidar com falhas de tarefas de forma elegante retentando até 3 vezes com backoff exponencial. Se todas as tentativas forem esgotadas, atualizar STATE.md para `BLOCKED` e notificar o usuário com um relatório detalhado de falha.
 
 ---
 
-## Inputs
+## Entradas
 
-- Task ID (e.g., `T-003`).
-- Failure description (what failed, error messages, last attempt details).
+- ID da tarefa (ex.: `T-003`).
+- Descrição da falha (o que falhou, mensagens de erro, detalhes da última tentativa).
 - `.specs/features/[feature-name]/tasks.md`
 - `.specs/features/[feature-name]/execution.md`
 - `.specs/STATE.md`
 
 ---
 
-## Retry Policy
+## Política de Retentativa
 
 ```yaml
 retry_policy:
   max_attempts: 3
   backoff:
-    attempt_1: immediate   # retry right away
-    attempt_2: 30 seconds  # wait before second retry
-    attempt_3: 120 seconds # wait before third retry
+    attempt_1: imediata     # retentar imediatamente
+    attempt_2: 30 segundos  # aguardar antes da segunda retentativa
+    attempt_3: 120 segundos # aguardar antes da terceira retentativa
   on_exhaustion: BLOCKED
 ```
 
 ---
 
-## Steps
+## Passos
 
-### Step 1 — Read Retry History
+### Passo 1 — Ler Histórico de Retentativas
 
-Read `execution.md` and find the retry log for the target task.
+Ler `execution.md` e encontrar o log de retentativas da tarefa alvo.
 
-Determine `current_attempt_count`:
-- If no retry log entry exists: `current_attempt_count = 0`.
-- Otherwise: read the count from the retry log.
+Determinar `current_attempt_count`:
+- Se não houver entrada no log de retentativas: `current_attempt_count = 0`.
+- Caso contrário: ler o contador do log de retentativas.
 
-### Step 2 — Check Attempt Count
+### Passo 2 — Verificar Contador de Tentativas
 
 ```
-If current_attempt_count >= 3:
-    → Go to Step 7 (Mark as BLOCKED)
-Else:
-    → Continue to Step 3
+Se current_attempt_count >= 3:
+    → Ir para o Passo 7 (Marcar como BLOCKED)
+Senão:
+    → Continuar para o Passo 3
 ```
 
-### Step 3 — Log the Failure
+### Passo 3 — Registrar a Falha
 
-Append to the retry log in `execution.md`:
+Acrescentar ao log de retentativas em `execution.md`:
 
 ```markdown
-| [task ID] | [attempt N] | [timestamp] | [failure reason] | [next attempt timestamp] |
+| [ID da tarefa] | [tentativa N] | [timestamp] | [motivo da falha] | [timestamp da próxima tentativa] |
 ```
 
-### Step 4 — Diagnose the Failure
+### Passo 4 — Diagnosticar a Falha
 
-Before retrying, analyze the failure:
+Antes de retentar, analisar a falha:
 
-1. Read the error messages and stack traces from the previous attempt.
-2. Determine the failure category:
-   - **Transient failure** (e.g., network timeout, flaky test, race condition): retry with same approach.
-   - **Logic failure** (e.g., wrong implementation, misunderstood requirement): adjust the approach before retrying.
-   - **Environment failure** (e.g., missing dependency, broken tool): resolve the environment issue first.
-   - **Specification gap** (e.g., requirement is ambiguous, design is incomplete): do not retry — escalate to the user.
+1. Ler as mensagens de erro e stack traces da tentativa anterior.
+2. Determinar a categoria da falha:
+   - **Falha transiente** (ex.: timeout de rede, teste instável, condição de corrida): retentar com a mesma abordagem.
+   - **Falha de lógica** (ex.: implementação errada, requisito mal entendido): ajustar a abordagem antes de retentar.
+   - **Falha de ambiente** (ex.: dependência ausente, ferramenta quebrada): resolver o problema de ambiente primeiro.
+   - **Lacuna na especificação** (ex.: requisito ambíguo, design incompleto): não retentar — escalar para o usuário.
 
-3. If the failure is a Specification Gap, go directly to Step 6 (escalate).
+3. Se a falha for uma Lacuna na Especificação, ir diretamente para o Passo 6 (escalar).
 
-### Step 5 — Retry with Backoff
+### Passo 5 — Retentar com Backoff
 
-Apply the backoff delay appropriate for the current attempt:
+Aplicar o atraso de backoff apropriado para a tentativa atual:
 
-| Attempt | Backoff |
-|---------|---------|
-| 1st retry | Immediate |
-| 2nd retry | 30 seconds |
-| 3rd retry | 120 seconds |
+| Tentativa | Backoff |
+|-----------|---------|
+| 1ª retentativa | Imediata |
+| 2ª retentativa | 30 segundos |
+| 3ª retentativa | 120 segundos |
 
-Increment `current_attempt_count` by 1.
+Incrementar `current_attempt_count` em 1.
 
-Update `execution.md` retry log with the new attempt start time.
+Atualizar o log de retentativas de `execution.md` com o horário de início da nova tentativa.
 
-Re-execute the task using `scripts/execute-task.md` with any adjustments identified in Step 4.
+Re-executar a tarefa usando `scripts/execute-task.md` com quaisquer ajustes identificados no Passo 4.
 
-If the retry succeeds: mark the task as `Completed` in `execution.md` and continue normally.
+Se a retentativa for bem-sucedida: marcar a tarefa como `Concluída` em `execution.md` e continuar normalmente.
 
-If the retry fails: return to Step 2 with the incremented count.
+Se a retentativa falhar: voltar ao Passo 2 com o contador incrementado.
 
-### Step 6 — Escalate Specification Gap
+### Passo 6 — Escalar Lacuna na Especificação
 
-If the failure is due to an ambiguous specification or incomplete design:
+Se a falha for devido a uma especificação ambígua ou design incompleto:
 
 ```
 A tarefa [T-XXX] falhou devido a uma lacuna na especificação:
 
-Problema identificado: [description]
+Problema identificado: [descrição]
 
 Ação necessária:
-- Revisar .specs/features/[feature-name]/spec.md — [specific section]
-- OU revisar .specs/features/[feature-name]/design.md — [specific section]
+- Revisar .specs/features/[feature-name]/spec.md — [seção específica]
+- OU revisar .specs/features/[feature-name]/design.md — [seção específica]
 
 O que gostaria de fazer?
 1. Atualizar a especificação e re-gerar as tarefas afetadas.
@@ -113,43 +113,43 @@ O que gostaria de fazer?
 3. Pular esta tarefa e continuar com as próximas (marcar como bloqueada).
 ```
 
-Wait for user response before taking any action.
+Aguardar resposta do usuário antes de tomar qualquer ação.
 
-### Step 7 — Mark as BLOCKED (exhausted retries)
+### Passo 7 — Marcar como BLOCKED (tentativas esgotadas)
 
-After 3 failed attempts:
+Após 3 tentativas falhadas:
 
-**Update `execution.md`:**
-Mark the task as `Blocked`.
+**Atualizar `execution.md`:**
+Marcar a tarefa como `Bloqueada`.
 
 ```markdown
-| T-XXX | Blocked | [timestamp] | [final failure reason] | - |
+| T-XXX | Bloqueada | [timestamp] | [motivo da falha final] | - |
 ```
 
-**Call `scripts/update-state.md`:**
+**Chamar `scripts/update-state.md`:**
 ```
 Status: BLOCKED
 Feature: [feature-name]
 Current Task: T-XXX
 blocked_task: T-XXX
-blocked_reason: [failure reason summary]
+blocked_reason: [resumo do motivo da falha]
 ```
 
-**Notify the user:**
+**Notificar o usuário:**
 
 ```
-A tarefa [T-XXX]: "[task title]" foi bloqueada após 3 tentativas.
+A tarefa [T-XXX]: "[título da tarefa]" foi bloqueada após 3 tentativas.
 
 Histórico de falhas:
-  Tentativa 1: [timestamp] — [reason]
-  Tentativa 2: [timestamp] — [reason]
-  Tentativa 3: [timestamp] — [reason]
+  Tentativa 1: [timestamp] — [motivo]
+  Tentativa 2: [timestamp] — [motivo]
+  Tentativa 3: [timestamp] — [motivo]
 
-Causa provável: [diagnosis]
+Causa provável: [diagnóstico]
 
 Tarefas bloqueadas como consequência (dependem de T-XXX):
-  - [T-YYY]: "[title]"
-  - [T-ZZZ]: "[title]"
+  - [T-YYY]: "[título]"
+  - [T-ZZZ]: "[título]"
 
 Opções:
 1. Fornecer mais contexto ou uma abordagem alternativa para que eu tente novamente.
@@ -158,20 +158,20 @@ Opções:
 4. Revisar a especificação ou design desta tarefa.
 ```
 
-Wait for user direction.
+Aguardar orientação do usuário.
 
 ---
 
-## Outputs
+## Saídas
 
-- Updated `execution.md` retry log.
-- Updated `STATE.md` (either back to `TASK_IN_PROGRESS` on success, or `BLOCKED` on exhaustion).
-- User notification with failure report and options.
+- Log de retentativas de `execution.md` atualizado.
+- `STATE.md` atualizado (de volta para `TASK_IN_PROGRESS` em caso de sucesso, ou `BLOCKED` em caso de esgotamento).
+- Notificação ao usuário com relatório de falha e opções.
 
 ---
 
-## Error Handling
+## Tratamento de Erros
 
-- If `execution.md` or `tasks.md` cannot be read, report the issue and halt.
-- If the backoff timer is not applicable in the current context (interactive session), simply note the recommended wait time and proceed when the user confirms.
-- Never silently swallow retry failures — always update the retry log and notify the user.
+- Se `execution.md` ou `tasks.md` não puderem ser lidos, reportar o problema e interromper.
+- Se o temporizador de backoff não for aplicável no contexto atual (sessão interativa), simplesmente indicar o tempo de espera recomendado e prosseguir quando o usuário confirmar.
+- Nunca engolir silenciosamente falhas de retentativa — sempre atualizar o log de retentativas e notificar o usuário.

@@ -1,74 +1,74 @@
-# Conventions: [PROJECT NAME]
+# Convenções: [NOME DO PROJETO]
 
-> Naming, coding style, patterns, and team agreements that must be consistently applied.
+> Nomenclatura, estilo de código, padrões e acordos de equipe que devem ser aplicados consistentemente.
 
 ---
 
-## Naming Conventions
+## Convenções de Nomenclatura
 
-### Files & Directories
+### Arquivos & Diretórios
 
-| Artifact | Convention | Example |
-|----------|------------|---------|
-| Source files | kebab-case | `user-repository.ts` |
-| Test files | `[name].test.ts` | `user-repository.test.ts` |
-| Directories | kebab-case | `use-cases/` |
+| Artefato | Convenção | Exemplo |
+|----------|-----------|---------|
+| Arquivos fonte | kebab-case | `user-repository.ts` |
+| Arquivos de teste | `[nome].test.ts` | `user-repository.test.ts` |
+| Diretórios | kebab-case | `use-cases/` |
 | Classes | PascalCase | `UserRepository` |
-| Interfaces | PascalCase (no `I` prefix) | `UserRepository` |
+| Interfaces | PascalCase (sem prefixo `I`) | `UserRepository` |
 | Types | PascalCase | `CreateUserInput` |
 
-### Code
+### Código
 
-| Artifact | Convention | Example |
-|----------|------------|---------|
-| Variables & functions | camelCase | `getUserById` |
-| Constants | UPPER_SNAKE_CASE | `MAX_RETRY_ATTEMPTS` |
-| Enums | PascalCase members | `Status.ACTIVE` |
-| Private members | camelCase (no underscore) | `this.repository` |
-| Boolean variables | `is/has/can` prefix | `isActive`, `hasPermission` |
+| Artefato | Convenção | Exemplo |
+|----------|-----------|---------|
+| Variáveis & funções | camelCase | `getUserById` |
+| Constantes | UPPER_SNAKE_CASE | `MAX_RETRY_ATTEMPTS` |
+| Enums | membros PascalCase | `Status.ACTIVE` |
+| Membros privados | camelCase (sem underscore) | `this.repository` |
+| Variáveis booleanas | prefixo `is/has/can` | `isActive`, `hasPermission` |
 
 ---
 
-## Import Order
+## Ordem de Imports
 
 ```typescript
-// 1. Node built-ins
+// 1. Built-ins do Node
 import { readFile } from 'node:fs/promises';
 
-// 2. External packages
+// 2. Pacotes externos
 import { z } from 'zod';
 
-// 3. Internal — absolute paths (if configured)
+// 3. Internos — caminhos absolutos (se configurado)
 import { UserRepository } from '@/domain/user';
 
-// 4. Internal — relative paths
+// 4. Internos — caminhos relativos
 import { CreateUserInput } from './types';
 ```
 
 ---
 
-## Error Handling
+## Tratamento de Erros
 
-<!-- Describe the strategy: exceptions, Result type, Either, etc. -->
+<!-- Descrever a estratégia: exceções, tipo Result, Either, etc. -->
 
 ```typescript
-// Example with Result pattern:
+// Exemplo com padrão Result:
 type Result<T> = { ok: true; value: T } | { ok: false; error: AppError };
 ```
 
 ---
 
-## Commit Convention
+## Convenção de Commits
 
-Following [Conventional Commits](https://www.conventionalcommits.org/):
+Seguindo [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-<type>(<scope>): <short summary>
+<tipo>(<escopo>): <resumo curto>
 
-Types: feat, fix, docs, style, refactor, test, chore, perf, ci
+Tipos: feat, fix, docs, style, refactor, test, chore, perf, ci
 ```
 
-Examples:
+Exemplos:
 ```
 feat(auth): add JWT refresh token support
 fix(users): handle duplicate email on registration
@@ -77,41 +77,41 @@ test(payments): add integration tests for retry logic
 
 ---
 
-## Code Style
+## Estilo de Código
 
-| Rule | Value |
-|------|-------|
-| Indentation | 2 spaces |
-| Quotes | Single (`'`) |
-| Semicolons | Yes |
-| Max line length | 100 characters |
-| Trailing commas | All (ES5+) |
-
----
-
-## Test Conventions
-
-- Test files live next to source files OR in a parallel `test/` directory (pick one, be consistent).
-- Each test file covers exactly one module.
-- Describe blocks: `describe('[ClassName/FunctionName]', () => {})`.
-- Test names: `it('should [expected behavior] when [condition]', ...)`.
-- Avoid `test()` — prefer `it()` for readability.
-- Use `beforeEach` to reset state, never share mutable state between tests.
+| Regra | Valor |
+|-------|-------|
+| Indentação | 2 espaços |
+| Aspas | Simples (`'`) |
+| Ponto e vírgula | Sim |
+| Comprimento máximo de linha | 100 caracteres |
+| Vírgulas finais | Todas (ES5+) |
 
 ---
 
-## Documentation
+## Convenções de Teste
 
-- Public functions and classes must have JSDoc.
-- Complex algorithms must have inline comments explaining *why*, not *what*.
-- TODOs must reference a task ID: `// TODO(T-XXX): ...`.
+- Arquivos de teste ficam ao lado dos arquivos fonte OU em um diretório paralelo `test/` (escolher um, ser consistente).
+- Cada arquivo de teste cobre exatamente um módulo.
+- Blocos describe: `describe('[NomeClasse/NomeFunção]', () => {})`.
+- Nomes de teste: `it('should [comportamento esperado] when [condição]', ...)`.
+- Evitar `test()` — preferir `it()` pela legibilidade.
+- Usar `beforeEach` para resetar estado, nunca compartilhar estado mutável entre testes.
 
 ---
 
-## Patterns to Avoid
+## Documentação
 
-<!-- Anti-patterns specific to this project -->
+- Funções e classes públicas devem ter JSDoc.
+- Algoritmos complexos devem ter comentários inline explicando o *porquê*, não o *o quê*.
+- TODOs devem referenciar um ID de tarefa: `// TODO(T-XXX): ...`.
 
-- Do not use `any` in TypeScript — use `unknown` and narrow explicitly.
-- Do not swallow errors silently — always log or propagate.
-- Do not access environment variables outside of the configuration module.
+---
+
+## Padrões a Evitar
+
+<!-- Anti-padrões específicos a este projeto -->
+
+- Não usar `any` em TypeScript — usar `unknown` e narrowing explícito.
+- Não engolir erros silenciosamente — sempre registrar ou propagar.
+- Não acessar variáveis de ambiente fora do módulo de configuração.

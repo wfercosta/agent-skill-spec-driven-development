@@ -1,111 +1,111 @@
 # Script: generate-execution-plan
 
-> Build a batched execution plan from the task dependency graph and request human approval before implementation begins.
+> Construir um plano de execução em batches a partir do grafo de dependências de tarefas e solicitar aprovação humana antes de iniciar a implementação.
 
 ---
 
-## Objective
+## Objetivo
 
-Read `graph.yaml`, perform a topological sort, group tasks into executable batches that maximize parallelism, produce `execution.md`, update STATE.md, and present the plan to the user for approval. Do not begin any implementation until approval is received.
+Ler `graph.yaml`, realizar uma ordenação topológica, agrupar as tarefas em batches executáveis que maximizem o paralelismo, produzir `execution.md`, atualizar STATE.md e apresentar o plano ao usuário para aprovação. Não iniciar nenhuma implementação até receber aprovação.
 
 ---
 
-## Inputs
+## Entradas
 
 - `.specs/features/[feature-name]/tasks.md`
 - `.specs/features/[feature-name]/graph.yaml`
 
 ---
 
-## Pre-conditions
+## Pré-condições
 
-1. `tasks.md` and `graph.yaml` must exist.
-2. `STATE.md` must be at `TASKS_GENERATED` or later.
-3. The dependency graph must be a valid DAG (no cycles).
+1. `tasks.md` e `graph.yaml` devem existir.
+2. `STATE.md` deve estar em `TASKS_GENERATED` ou posterior.
+3. O grafo de dependências deve ser um DAG válido (sem ciclos).
 
 ---
 
-## Steps
+## Passos
 
-### Step 1 — Read Inputs
+### Passo 1 — Ler Entradas
 
-Read `graph.yaml` and `tasks.md`.
+Ler `graph.yaml` e `tasks.md`.
 
-Extract for each task:
-- Task ID, title, estimate.
-- `depends_on` list.
-- `can_parallelize` flag.
+Extrair para cada tarefa:
+- ID da tarefa, título, estimativa.
+- Lista `depends_on`.
+- Flag `can_parallelize`.
 
-### Step 2 — Validate Dependency Graph
+### Passo 2 — Validar Grafo de Dependências
 
-Check for:
-- **Cycles**: if task A depends on B and B depends on A (directly or transitively), abort and report the cycle to the user.
-- **Missing references**: if a task lists a dependency that doesn't exist in the graph, report it.
-- **Self-dependencies**: a task cannot depend on itself.
+Verificar:
+- **Ciclos**: se a tarefa A depende de B e B depende de A (direta ou transitivamente), abortar e reportar o ciclo ao usuário.
+- **Referências ausentes**: se uma tarefa lista uma dependência que não existe no grafo, reportá-la.
+- **Auto-dependências**: uma tarefa não pode depender de si mesma.
 
-If any validation fails, do not proceed. Report the issue and wait for the user to fix `graph.yaml` or `tasks.md`.
+Se alguma validação falhar, não prosseguir. Reportar o problema e aguardar o usuário corrigir `graph.yaml` ou `tasks.md`.
 
-### Step 3 — Topological Sort
+### Passo 3 — Ordenação Topológica
 
-Perform a topological sort (Kahn's algorithm or DFS-based) on the dependency graph to produce a valid execution order.
+Realizar uma ordenação topológica (algoritmo de Kahn ou baseado em DFS) no grafo de dependências para produzir uma ordem de execução válida.
 
-### Step 4 — Group into Batches
+### Passo 4 — Agrupar em Batches
 
-A batch is a set of tasks that can all start at the same time because their dependencies are satisfied by previous batches.
+Um batch é um conjunto de tarefas que podem todas iniciar ao mesmo tempo porque suas dependências são satisfeitas pelos batches anteriores.
 
-Algorithm:
-1. Batch 1 = all tasks with `depends_on: []`.
-2. Batch N = all tasks whose dependencies are all in Batches 1..N-1.
-3. Repeat until all tasks are assigned.
+Algoritmo:
+1. Batch 1 = todas as tarefas com `depends_on: []`.
+2. Batch N = todas as tarefas cujas dependências estão todas nos Batches 1..N-1.
+3. Repetir até que todas as tarefas sejam atribuídas.
 
-Within each batch, identify tasks that can be executed in parallel (tasks with `can_parallelize: true` and no dependency between them within the same batch).
+Dentro de cada batch, identificar tarefas que podem ser executadas em paralelo (tarefas com `can_parallelize: true` e sem dependência entre si dentro do mesmo batch).
 
-### Step 5 — Calculate Estimates
+### Passo 5 — Calcular Estimativas
 
-For each batch:
-- **Sequential estimate**: sum of all task estimates.
-- **Parallel estimate**: estimate of the longest task in the batch (critical path).
+Para cada batch:
+- **Estimativa sequencial**: soma de todas as estimativas das tarefas.
+- **Estimativa paralela**: estimativa da tarefa mais longa do batch (caminho crítico).
 
-Total estimates:
-- **Total effort (sequential)**: sum of all task estimates.
-- **Minimum wall time (with full parallelism)**: sum of the critical path across batches.
+Estimativas totais:
+- **Esforço total (sequencial)**: soma de todas as estimativas das tarefas.
+- **Tempo mínimo de parede (com paralelismo total)**: soma do caminho crítico pelos batches.
 
-### Step 6 — Write `execution.md`
+### Passo 6 — Escrever `execution.md`
 
-Using `references/execution-template.md` as the base, populate:
-- Dependency graph summary (reproduced from graph.yaml for quick reference).
-- Each batch with its tasks and parallelism notes.
-- Estimates table.
-- Progress tracker (all tasks start as `Pending`).
-- The approval gate message.
+Usando `references/execution-template.md` como base, preencher:
+- Resumo do grafo de dependências (reproduzido de graph.yaml para referência rápida).
+- Cada batch com suas tarefas e notas de paralelismo.
+- Tabela de estimativas.
+- Rastreador de progresso (todas as tarefas iniciam como `Pendente`).
+- A mensagem do gate de aprovação.
 
-Write to: `.specs/features/[feature-name]/execution.md`
+Escrever em: `.specs/features/[feature-name]/execution.md`
 
-### Step 7 — Update `STATE.md` to `EXECUTION_PLAN_READY`
+### Passo 7 — Atualizar `STATE.md` para `EXECUTION_PLAN_READY`
 
-Call `scripts/update-state.md` with:
+Chamar `scripts/update-state.md` com:
 ```
 Status: EXECUTION_PLAN_READY
 Feature: [feature-name]
-Updated At: [current timestamp]
+Updated At: [timestamp atual]
 ```
 
-### Step 8 — Present Plan and Request Approval (MANDATORY GATE)
+### Passo 8 — Apresentar Plano e Solicitar Aprovação (GATE OBRIGATÓRIO)
 
-Present the plan to the user and wait for explicit approval. Do NOT begin any implementation without approval.
+Apresentar o plano ao usuário e aguardar aprovação explícita. NÃO iniciar nenhuma implementação sem aprovação.
 
 ```
 Plano de execução para "[feature-name]":
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Batch 1 — Paralelo (podem ser executadas simultaneamente):
-  • T-001: [title] (~[Xh])
-  • T-002: [title] (~[Xh])
+  • T-001: [título] (~[Xh])
+  • T-002: [título] (~[Xh])
 
 Batch 2 — Sequencial (requer conclusão do Batch 1):
-  • T-003: [title] (~[Xh]) — depende de T-001, T-002
+  • T-003: [título] (~[Xh]) — depende de T-001, T-002
 
-[... continue for all batches ...]
+[... continuar para todos os batches ...]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Estimativa total de esforço: ~[Xh]
@@ -115,39 +115,39 @@ Total de tarefas:            [N]
 Você aprova iniciar a implementação?
 ```
 
-### Step 9 — Handle Approval Response
+### Passo 9 — Lidar com a Resposta de Aprovação
 
-**If approved:**
-- Update `STATE.md` to `PLAN_APPROVAL_PENDING` momentarily, then immediately to `TASK_IN_PROGRESS`.
-- Confirm:
+**Se aprovado:**
+- Atualizar `STATE.md` para `PLAN_APPROVAL_PENDING` momentaneamente, depois imediatamente para `TASK_IN_PROGRESS`.
+- Confirmar:
   ```
   Plano aprovado. Iniciando implementação com o Batch 1.
   ```
-- Begin with the first batch. If the batch has parallel tasks and sub-agents are available, act as Orchestrator and spawn sub-agents.
+- Começar com o primeiro batch. Se o batch tiver tarefas paralelas e sub-agentes estiverem disponíveis, agir como Orquestrador e instanciar sub-agentes.
 
-**If not approved:**
-- Ask what changes the user wants:
+**Se não aprovado:**
+- Perguntar quais mudanças o usuário deseja:
   ```
   Entendido. O que você gostaria de ajustar no plano?
   (Ex.: reorganizar tarefas, ajustar estimativas, dividir ou mesclar tarefas)
   ```
-- Apply requested changes, update `tasks.md`, `graph.yaml`, and `execution.md`, then re-present for approval.
+- Aplicar as mudanças solicitadas, atualizar `tasks.md`, `graph.yaml` e `execution.md`, e então reapresentar para aprovação.
 
-**If user requests changes to scope:**
-- Go back to `generate-sdd.md` or `generate-tasks.md` as appropriate.
+**Se o usuário solicitar mudanças de escopo:**
+- Voltar a `generate-sdd.md` ou `generate-tasks.md` conforme apropriado.
 
 ---
 
-## Outputs
+## Saídas
 
 - `.specs/features/[feature-name]/execution.md`
-- `.specs/STATE.md` updated (to `EXECUTION_PLAN_READY`, then to `TASK_IN_PROGRESS` upon approval)
+- `.specs/STATE.md` atualizado (para `EXECUTION_PLAN_READY`, depois para `TASK_IN_PROGRESS` após aprovação)
 
 ---
 
-## Error Handling
+## Tratamento de Erros
 
-- Cycle in dependency graph: abort, report the cycle with the task IDs involved, wait for correction.
-- Missing tasks referenced as dependencies: abort, report the missing IDs, wait for correction.
-- User does not approve and provides no feedback: ask again with a prompt for specific concerns.
-- Execution plan becomes invalid after scope changes: regenerate tasks and graph before re-running this script.
+- Ciclo no grafo de dependências: abortar, reportar o ciclo com os IDs das tarefas envolvidas, aguardar correção.
+- Tarefas referenciadas como dependências que não existem: abortar, reportar os IDs ausentes, aguardar correção.
+- Usuário não aprova e não fornece feedback: perguntar novamente com um prompt para preocupações específicas.
+- O plano de execução fica inválido após mudanças de escopo: regenerar tarefas e grafo antes de executar este script novamente.

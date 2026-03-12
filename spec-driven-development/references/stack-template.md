@@ -1,42 +1,42 @@
-# Stack: [PROJECT NAME]
+# Stack: [NOME DO PROJETO]
 
-> Technology stack, key dependencies, and tooling decisions.
-
----
-
-## Language & Runtime
-
-| Item | Version | Notes |
-|------|---------|-------|
-| Language | [e.g., TypeScript 5.x] | |
-| Runtime | [e.g., Node.js 22 LTS] | |
-| Package Manager | [e.g., pnpm 9.x] | |
+> Stack tecnológico, dependências principais e decisões de ferramental.
 
 ---
 
-## Frameworks & Libraries
+## Linguagem & Runtime
+
+| Item | Versão | Notas |
+|------|--------|-------|
+| Linguagem | [ex.: TypeScript 5.x] | |
+| Runtime | [ex.: Node.js 22 LTS] | |
+| Gerenciador de Pacotes | [ex.: pnpm 9.x] | |
+
+---
+
+## Frameworks & Bibliotecas
 
 ### Core
 
-| Library | Version | Purpose |
-|---------|---------|---------|
-| [e.g., Express] | [v] | HTTP server |
-| [e.g., Prisma] | [v] | ORM |
+| Biblioteca | Versão | Propósito |
+|------------|--------|-----------|
+| [ex.: Express] | [v] | Servidor HTTP |
+| [ex.: Prisma] | [v] | ORM |
 
-### Testing
+### Testes
 
-| Library | Version | Purpose |
-|---------|---------|---------|
-| [e.g., Vitest] | [v] | Unit & integration tests |
-| [e.g., Supertest] | [v] | HTTP integration tests |
+| Biblioteca | Versão | Propósito |
+|------------|--------|-----------|
+| [ex.: Vitest] | [v] | Testes unitários e de integração |
+| [ex.: Supertest] | [v] | Testes de integração HTTP |
 
-### Tooling
+### Ferramental
 
-| Tool | Version | Purpose |
-|------|---------|---------|
-| [e.g., ESLint] | [v] | Linting |
-| [e.g., Prettier] | [v] | Formatting |
-| [e.g., tsx / ts-node] | [v] | Dev runner |
+| Ferramenta | Versão | Propósito |
+|------------|--------|-----------|
+| [ex.: ESLint] | [v] | Linting |
+| [ex.: Prettier] | [v] | Formatação |
+| [ex.: tsx / ts-node] | [v] | Runner de desenvolvimento |
 
 ---
 
@@ -45,40 +45,40 @@
 ```json
 {
   "scripts": {
-    "build": "[build command]",
-    "start": "[start command]",
-    "dev": "[dev command]",
-    "test": "[test command]",
-    "test:watch": "[watch command]",
-    "lint": "[lint command]"
+    "build": "[comando de build]",
+    "start": "[comando de start]",
+    "dev": "[comando de dev]",
+    "test": "[comando de teste]",
+    "test:watch": "[comando de watch]",
+    "lint": "[comando de lint]"
   }
 }
 ```
 
 ---
 
-## Infrastructure
+## Infraestrutura
 
-| Component | Technology | Notes |
-|-----------|------------|-------|
-| Database | [e.g., PostgreSQL 16] | |
-| Cache | [e.g., Redis 7] | |
-| Message Broker | [e.g., RabbitMQ] | |
-| Container | [e.g., Docker + Compose] | |
-
----
-
-## Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | Database connection string |
-| `PORT` | No | HTTP port (default: 3000) |
+| Componente | Tecnologia | Notas |
+|------------|------------|-------|
+| Banco de Dados | [ex.: PostgreSQL 16] | |
+| Cache | [ex.: Redis 7] | |
+| Message Broker | [ex.: RabbitMQ] | |
+| Container | [ex.: Docker + Compose] | |
 
 ---
 
-## Constraints & Notes
+## Variáveis de Ambiente
 
-<!-- Known version constraints, EOL warnings, or upgrade plans -->
+| Variável | Obrigatória | Descrição |
+|----------|-------------|-----------|
+| `DATABASE_URL` | Sim | String de conexão com o banco de dados |
+| `PORT` | Não | Porta HTTP (padrão: 3000) |
+
+---
+
+## Restrições & Notas
+
+<!-- Restrições de versão conhecidas, avisos de EOL ou planos de upgrade -->
 
 -

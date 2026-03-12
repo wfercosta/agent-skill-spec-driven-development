@@ -1,87 +1,87 @@
-# Concerns: [PROJECT NAME]
+# Preocupações: [NOME DO PROJETO]
 
-> Technical debt, fragile areas, known risks, and items requiring attention.
-
----
-
-## Severity Levels
-
-| Level | Meaning |
-|-------|---------|
-| CRITICAL | Blocking issue — must be addressed before new features |
-| HIGH | Significant risk — schedule for near-term resolution |
-| MEDIUM | Manageable debt — address during next refactor |
-| LOW | Minor issue — address opportunistically |
+> Débito técnico, áreas frágeis, riscos conhecidos e itens que requerem atenção.
 
 ---
 
-## Active Concerns
+## Níveis de Severidade
 
-### [CONCERN-001] [Short title]
-
-- **Severity**: [CRITICAL / HIGH / MEDIUM / LOW]
-- **Area**: [e.g., Authentication, Database layer, CI pipeline]
-- **Description**: [What the problem is and where it lives]
-- **Impact**: [What breaks or degrades if this is ignored]
-- **Root Cause**: [Why this exists — time pressure, legacy decision, missing knowledge]
-- **Remediation**: [Proposed solution or workaround]
-- **Effort**: [e.g., Small / Medium / Large]
-- **Identified At**: [YYYY-MM-DD]
+| Nível | Significado |
+|-------|-------------|
+| CRÍTICO | Problema bloqueante — deve ser resolvido antes de novas features |
+| ALTO | Risco significativo — agendar para resolução próxima |
+| MÉDIO | Débito gerenciável — resolver durante próxima refatoração |
+| BAIXO | Problema menor — resolver oportunisticamente |
 
 ---
 
-## Technical Debt Log
+## Preocupações Ativas
 
-| ID | Area | Description | Severity | Identified | Status |
-|----|------|-------------|----------|-----------|--------|
-| CONCERN-001 | [area] | [brief description] | HIGH | [date] | Open |
+### [CONCERN-001] [Título curto]
 
----
-
-## Fragile Areas
-
-<!-- Code areas that are known to break easily or require special care when modified -->
-
-| Area / File | Why It's Fragile | Precautions |
-|-------------|-----------------|-------------|
-| [e.g., `src/payments/retry.ts`] | Complex state machine, no tests | Add tests before modifying |
-| [e.g., Database migrations] | Manual steps, no rollback | Test on staging first |
+- **Severidade**: [CRÍTICO / ALTO / MÉDIO / BAIXO]
+- **Área**: [ex.: Autenticação, Camada de banco de dados, Pipeline CI]
+- **Descrição**: [Qual é o problema e onde ele está]
+- **Impacto**: [O que quebra ou degrada se isso for ignorado]
+- **Causa Raiz**: [Por que isso existe — pressão de tempo, decisão legada, conhecimento ausente]
+- **Remediação**: [Solução proposta ou contorno]
+- **Esforço**: [ex.: Pequeno / Médio / Grande]
+- **Identificado Em**: [YYYY-MM-DD]
 
 ---
 
-## Security Concerns
+## Log de Débito Técnico
 
-<!-- Known security issues or areas that need a security review -->
-
-| Concern | Status | Notes |
-|---------|--------|-------|
-| [e.g., Secrets in logs] | Open | Check all log.info calls |
-| [e.g., SQL injection in search] | Resolved | Migrated to Prisma ORM |
+| ID | Área | Descrição | Severidade | Identificado | Status |
+|----|------|-----------|------------|-------------|--------|
+| CONCERN-001 | [área] | [descrição breve] | ALTO | [data] | Aberto |
 
 ---
 
-## Performance Concerns
+## Áreas Frágeis
 
-<!-- Known bottlenecks or scalability risks -->
+<!-- Áreas de código conhecidas por quebrar facilmente ou que requerem cuidado especial ao modificar -->
 
-| Area | Concern | Measured? | Notes |
-|------|---------|-----------|-------|
-| [e.g., User list endpoint] | N+1 query | No | Needs eager loading |
+| Área / Arquivo | Por que É Frágil | Precauções |
+|----------------|-----------------|------------|
+| [ex.: `src/payments/retry.ts`] | Máquina de estados complexa, sem testes | Adicionar testes antes de modificar |
+| [ex.: Migrações de banco de dados] | Passos manuais, sem rollback | Testar em staging primeiro |
 
 ---
 
-## Resolved Concerns
+## Preocupações de Segurança
 
-<!-- Keep a record of addressed concerns for historical reference -->
+<!-- Problemas de segurança conhecidos ou áreas que precisam de revisão de segurança -->
 
-| ID | Description | Resolved At | How |
-|----|-------------|------------|-----|
+| Preocupação | Status | Notas |
+|-------------|--------|-------|
+| [ex.: Segredos em logs] | Aberto | Verificar todas as chamadas log.info |
+| [ex.: SQL injection na busca] | Resolvido | Migrado para Prisma ORM |
+
+---
+
+## Preocupações de Performance
+
+<!-- Gargalos conhecidos ou riscos de escalabilidade -->
+
+| Área | Preocupação | Medido? | Notas |
+|------|------------|---------|-------|
+| [ex.: Endpoint de listagem de usuários] | Query N+1 | Não | Precisa de eager loading |
+
+---
+
+## Preocupações Resolvidas
+
+<!-- Manter um registro das preocupações endereçadas para referência histórica -->
+
+| ID | Descrição | Resolvido Em | Como |
+|----|-----------|-------------|------|
 | | | | |
 
 ---
 
-## Notes
+## Notas
 
-<!-- Anything that doesn't fit the above categories but warrants attention -->
+<!-- Qualquer coisa que não se encaixe nas categorias acima mas mereça atenção -->
 
 -
