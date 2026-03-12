@@ -49,6 +49,27 @@ O agente deve reconhecer as seguintes intenções (o enunciado exato pode variar
 
 **Ação**: Executar `scripts/execute-task.md`.
 
+### Tarefa Rápida (Quick Mode)
+- `tarefa rápida: [descrição]` / `correção rápida: [descrição]` / `tarefa rápida para [descrição]`
+- `criar tarefa rápida [descrição]` / `criar correção rápida para [descrição]`
+- `corrigir bug em [descrição]` / `corrigir [descrição]`
+- `ajuste rápido em [descrição]` / `fix rápido: [descrição]`
+- `quick task: [description]` / `quick fix: [description]` / `quick task for [description]`
+- `create quick task [description]` / `create quick fix for [description]`
+- `fix bug in [description]` / `fix [description]`
+
+Exemplos:
+- `tarefa rápida: corrigir erro no endpoint de login`
+- `criar tarefa rápida corrigir validação do login`
+- `criar correção rápida para null pointer no serviço de pagamento`
+- `corrigir bug na lógica de retentativa de pagamento`
+- `quick task: fix error in login endpoint`
+- `create quick task fix login validation`
+- `create quick fix for null pointer in payment service`
+- `fix bug in payment retry logic`
+
+**Ação**: Criar `.specs/quick/NNN-slug/TASK.md` com descrição e critérios de verificação. Implementar diretamente sem ciclo SDD completo. Ao concluir, criar `.specs/quick/NNN-slug/SUMMARY.md`.
+
 ---
 
 ## Estrutura do Projeto
